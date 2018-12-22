@@ -1,0 +1,57 @@
+<header class="header">
+    <a href="" class="logo">{{app["title"]}}</a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+
+        <!-- Sidebar toggle button-->
+        <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+		
+		<div id="navbar" class="navbar navbar-right ">
+		 <ul class="nav navbar-nav">
+		
+			
+			 {% if app['credentials']['login'] != "guest" %}
+			 <li> 	 {{app['credentials']['login']}} 
+			
+			<!-- see views/backed.html for script declarationss -->	
+			 <form method="post" id="role_selector" name ="role_selector" action="{{ app['www_root']  }}/navchangerole" enctype="multipart/form-data">
+				<select id="role_selector_request_role" name="role_selector[request_role]" >
+				
+				
+				
+				{% for  role in app['credentials']['roles'] %}
+					{% set _selected = role==  app['credentials']['current_role'] %}
+					<option value="{{role}}" {% if _selected  == true	%} 
+													selected ="selected"
+											  {% endif %}
+					> 
+						{{ role }}
+					</option>
+				{% endfor %}
+				
+				</select>
+			</form>	
+			 {% endif %}
+			 
+			 </li>
+			 
+		 </ul>
+	{% if app['credentials']['login'] != "guest" %}
+		<a href="{{ app['logout_url'] }}">Sign Out</a>
+	{% else %}
+		<a href="{{ app['login_url'] }}">Sign In</a>
+	
+	{% endif %}
+	</div>
+	
+    </nav>
+	
+			 
+
+</header>
