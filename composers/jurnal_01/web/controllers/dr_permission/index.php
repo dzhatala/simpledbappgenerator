@@ -43,10 +43,10 @@ $app->match('/dr_permission/list', function (Symfony\Component\HttpFoundation\Re
     }
     
     $table_columns = array(
-		'dr_permission_ID', 
-		'CRUD_TABLE_ID', 
-		'USER_LOGIN_ID', 
-		'RECORD_ID', 
+		'dr_permission_id', 
+		'crud_table_id', 
+		'user_login_id', 
+		'record_id', 
 
     );
     
@@ -67,12 +67,12 @@ $app->match('/dr_permission/list', function (Symfony\Component\HttpFoundation\Re
 	/**Creating enabler .. for  dr_permission:crud_table_id  **/
 
 	if ($searchValue!==""){
-	    $search_sql = "SELECT `crud_table_ID` FROM `crud_table` WHERE `NAME` LIKE '%". $searchValue . "%'" ; 
+	    $search_sql = "SELECT `crud_table_id` FROM `crud_table` WHERE `name` LIKE '%". $searchValue . "%'" ; 
 	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
 	    //error_log("#####crud_table_id=>crud_table######".count($search_row));
 	    if(count($search_rows)>0){
 	      foreach($search_rows as $search_row)  { 
-	         $transform_text_to_key .= " OR  crud_table_id=".$search_row['crud_table_ID']; 
+	         $transform_text_to_key .= " OR  crud_table_id=".$search_row['crud_table_id']; 
 	      } 
 	    }
 	 } 
@@ -80,12 +80,12 @@ $app->match('/dr_permission/list', function (Symfony\Component\HttpFoundation\Re
 	/**Creating enabler .. for  dr_permission:user_login_id  **/
 
 	if ($searchValue!==""){
-	    $search_sql = "SELECT `user_login_ID` FROM `user_login` WHERE `LOGIN` LIKE '%". $searchValue . "%'" ; 
+	    $search_sql = "SELECT `user_login_id` FROM `user_login` WHERE `login` LIKE '%". $searchValue . "%'" ; 
 	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
 	    //error_log("#####user_login_id=>user_login######".count($search_row));
 	    if(count($search_rows)>0){
 	      foreach($search_rows as $search_row)  { 
-	         $transform_text_to_key .= " OR  user_login_id=".$search_row['user_login_ID']; 
+	         $transform_text_to_key .= " OR  user_login_id=".$search_row['user_login_id']; 
 	      } 
 	    }
 	 } 
@@ -125,15 +125,15 @@ $app->match('/dr_permission/list', function (Symfony\Component\HttpFoundation\Re
     foreach($rows_sql as $row_key => $row_sql){
         for($i = 0; $i < count($table_columns); $i++){
 
-			if($table_columns[$i] == 'CRUD_TABLE_ID'){
-			    $findexternal_sql = 'SELECT `NAME` FROM `crud_table` WHERE `crud_table_ID` = ?';
+			if($table_columns[$i] == 'crud_table_id'){
+			    $findexternal_sql = 'SELECT `name` FROM `crud_table` WHERE `crud_table_id` = ?';
 			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
-			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['NAME'];
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['name'];
 			}
-			else if($table_columns[$i] == 'USER_LOGIN_ID'){
-			    $findexternal_sql = 'SELECT `LOGIN` FROM `user_login` WHERE `user_login_ID` = ?';
+			else if($table_columns[$i] == 'user_login_id'){
+			    $findexternal_sql = 'SELECT `login` FROM `user_login` WHERE `user_login_id` = ?';
 			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
-			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['LOGIN'];
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['login'];
 			}
 			else{
 			    $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
@@ -196,10 +196,10 @@ $app->match('/dr_permission/download', function (Symfony\Component\HttpFoundatio
 $app->match('/dr_permission', function () use ($app) {
     
 	$table_columns = array(
-		'dr_permission_ID', 
-		'CRUD_TABLE_ID', 
-		'USER_LOGIN_ID', 
-		'RECORD_ID', 
+		'dr_permission_id', 
+		'crud_table_id', 
+		'user_login_id', 
+		'record_id', 
 
     );
 	
@@ -213,7 +213,7 @@ $app->match('/dr_permission', function () use ($app) {
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "dr_permission_ID";	
+    $primary_key = "dr_permission_id";	
 
     return $app['twig']->render('dr_permission/list.html.twig', array(
     	"table_columns" => $table_columns,
@@ -228,9 +228,9 @@ $app->match('/dr_permission', function () use ($app) {
 $app->match('/dr_permission/create', function () use ($app) {
     
     $initial_data = array(
-		'CRUD_TABLE_ID' => '', 
-		'USER_LOGIN_ID' => '', 
-		'RECORD_ID' => '', 
+		'crud_table_id' => '', 
+		'user_login_id' => '', 
+		'record_id' => '', 
 
     );
 
@@ -244,13 +244,13 @@ $app->match('/dr_permission/create', function () use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT crud_table.crud_table_ID, crud_table.NAME FROM crud_table  '  . $limiter ;
+	$findexternal_sql = 'SELECT crud_table.crud_table_id, crud_table.name FROM crud_table  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['crud_table_ID']] = $findexternal_row['NAME'];
+	    $options[$findexternal_row['crud_table_id']] = $findexternal_row['name'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('CRUD_TABLE_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('crud_table_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -258,7 +258,7 @@ $app->match('/dr_permission/create', function () use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('CRUD_TABLE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('crud_table_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 	$field_nullable= true  ; 
@@ -269,13 +269,13 @@ $app->match('/dr_permission/create', function () use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_login.user_login_ID, user_login.LOGIN FROM user_login  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_login.user_login_id, user_login.login FROM user_login  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_login_ID']] = $findexternal_row['LOGIN'];
+	    $options[$findexternal_row['user_login_id']] = $findexternal_row['login'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_LOGIN_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_login_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -283,7 +283,7 @@ $app->match('/dr_permission/create', function () use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_LOGIN_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_login_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 
@@ -296,7 +296,7 @@ $app->match('/dr_permission/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('RECORD_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('record_id', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -308,8 +308,8 @@ $app->match('/dr_permission/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `dr_permission` (`CRUD_TABLE_ID`, `USER_LOGIN_ID`, `RECORD_ID`) VALUES (?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['CRUD_TABLE_ID'], $data['USER_LOGIN_ID'], $data['RECORD_ID']));            
+            $update_query = "INSERT INTO `dr_permission` (`crud_table_id`, `user_login_id`, `record_id`) VALUES (?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['crud_table_id'], $data['user_login_id'], $data['record_id']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -334,7 +334,7 @@ $app->match('/dr_permission/create', function () use ($app) {
 
 $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `dr_permission` WHERE `dr_permission_ID` = ?";
+    $find_sql = "SELECT * FROM `dr_permission` WHERE `dr_permission_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -349,9 +349,9 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
-		'CRUD_TABLE_ID' => $row_sql['CRUD_TABLE_ID'], 
-		'USER_LOGIN_ID' => $row_sql['USER_LOGIN_ID'], 
-		'RECORD_ID' => $row_sql['RECORD_ID'], 
+		'crud_table_id' => $row_sql['crud_table_id'], 
+		'user_login_id' => $row_sql['user_login_id'], 
+		'record_id' => $row_sql['record_id'], 
 
     );
 
@@ -366,13 +366,13 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT crud_table.crud_table_ID, crud_table.NAME FROM crud_table  '  . $limiter ;
+	$findexternal_sql = 'SELECT crud_table.crud_table_id, crud_table.name FROM crud_table  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['crud_table_ID']] = $findexternal_row['NAME'];
+	    $options[$findexternal_row['crud_table_id']] = $findexternal_row['name'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('CRUD_TABLE_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('crud_table_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -380,7 +380,7 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('CRUD_TABLE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('crud_table_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 	$field_nullable= true  ; 
@@ -391,13 +391,13 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_login.user_login_ID, user_login.LOGIN FROM user_login  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_login.user_login_id, user_login.login FROM user_login  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_login_ID']] = $findexternal_row['LOGIN'];
+	    $options[$findexternal_row['user_login_id']] = $findexternal_row['login'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_LOGIN_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_login_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -405,7 +405,7 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_LOGIN_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_login_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 
@@ -417,7 +417,7 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('RECORD_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('record_id', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -430,8 +430,8 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `dr_permission` SET `CRUD_TABLE_ID` = ?, `USER_LOGIN_ID` = ?, `RECORD_ID` = ? WHERE `dr_permission_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['CRUD_TABLE_ID'], $data['USER_LOGIN_ID'], $data['RECORD_ID'], $id));            
+            $update_query = "UPDATE `dr_permission` SET `crud_table_id` = ?, `user_login_id` = ?, `record_id` = ? WHERE `dr_permission_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['crud_table_id'], $data['user_login_id'], $data['record_id'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
@@ -457,11 +457,11 @@ $app->match('/dr_permission/edit/{id}', function ($id) use ($app) {
 
 $app->match('/dr_permission/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `dr_permission` WHERE `dr_permission_ID` = ?";
+    $find_sql = "SELECT * FROM `dr_permission` WHERE `dr_permission_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `dr_permission` WHERE `dr_permission_ID` = ?";
+        $delete_query = "DELETE FROM `dr_permission` WHERE `dr_permission_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(

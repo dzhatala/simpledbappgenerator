@@ -43,8 +43,8 @@ $app->match('/crud_table/list', function (Symfony\Component\HttpFoundation\Reque
     }
     
     $table_columns = array(
-		'crud_table_ID', 
-		'NAME', 
+		'crud_table_id', 
+		'name', 
 
     );
     
@@ -165,8 +165,8 @@ $app->match('/crud_table/download', function (Symfony\Component\HttpFoundation\R
 $app->match('/crud_table', function () use ($app) {
     
 	$table_columns = array(
-		'crud_table_ID', 
-		'NAME', 
+		'crud_table_id', 
+		'name', 
 
     );
 	
@@ -180,7 +180,7 @@ $app->match('/crud_table', function () use ($app) {
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "crud_table_ID";	
+    $primary_key = "crud_table_id";	
 
     return $app['twig']->render('crud_table/list.html.twig', array(
     	"table_columns" => $table_columns,
@@ -195,7 +195,7 @@ $app->match('/crud_table', function () use ($app) {
 $app->match('/crud_table/create', function () use ($app) {
     
     $initial_data = array(
-		'NAME' => '', 
+		'name' => '', 
 
     );
 
@@ -211,7 +211,7 @@ $app->match('/crud_table/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('NAME', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('name', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -223,8 +223,8 @@ $app->match('/crud_table/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `crud_table` (`NAME`) VALUES (?)";
-            $app['db']->executeUpdate($update_query, array($data['NAME']));            
+            $update_query = "INSERT INTO `crud_table` (`name`) VALUES (?)";
+            $app['db']->executeUpdate($update_query, array($data['name']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -249,7 +249,7 @@ $app->match('/crud_table/create', function () use ($app) {
 
 $app->match('/crud_table/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `crud_table` WHERE `crud_table_ID` = ?";
+    $find_sql = "SELECT * FROM `crud_table` WHERE `crud_table_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -264,7 +264,7 @@ $app->match('/crud_table/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
-		'NAME' => $row_sql['NAME'], 
+		'name' => $row_sql['name'], 
 
     );
 
@@ -280,7 +280,7 @@ $app->match('/crud_table/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('NAME', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('name', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -293,8 +293,8 @@ $app->match('/crud_table/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `crud_table` SET `NAME` = ? WHERE `crud_table_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['NAME'], $id));            
+            $update_query = "UPDATE `crud_table` SET `name` = ? WHERE `crud_table_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['name'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
@@ -320,11 +320,11 @@ $app->match('/crud_table/edit/{id}', function ($id) use ($app) {
 
 $app->match('/crud_table/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `crud_table` WHERE `crud_table_ID` = ?";
+    $find_sql = "SELECT * FROM `crud_table` WHERE `crud_table_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `crud_table` WHERE `crud_table_ID` = ?";
+        $delete_query = "DELETE FROM `crud_table` WHERE `crud_table_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(

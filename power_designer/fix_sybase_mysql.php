@@ -54,6 +54,9 @@ echo $query."\n" ; mysql_query($query) or die (mysql_error());
 $query ="INSERT INTO `user_role_type` (`role_name`) VALUES ('Guest') " ; 
 echo $query."\n" ; mysql_query($query) or die (mysql_error());
 
+$query ="INSERT INTO `user_role_type` (`role_name`) VALUES ('Registered') " ; 
+echo $query."\n" ; mysql_query($query) or die (mysql_error());
+
 
 $query=" DELETE FROM user_role" ;
 echo $query."\n" ; mysql_query($query) or die (mysql_error());

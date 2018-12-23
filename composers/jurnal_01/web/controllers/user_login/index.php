@@ -43,13 +43,13 @@ $app->match('/user_login/list', function (Symfony\Component\HttpFoundation\Reque
     }
     
     $table_columns = array(
-		'user_login_ID', 
-		'LOGIN', 
-		'PLAIN_PASSWORD', 
-		'HASHED_PASSWORD', 
-		'USER_LEVEL', 
-		'EMAIL', 
-		'PHONE', 
+		'user_login_id', 
+		'login', 
+		'plain_password', 
+		'hashed_password', 
+		'user_level', 
+		'email', 
+		'phone', 
 
     );
     
@@ -175,13 +175,13 @@ $app->match('/user_login/download', function (Symfony\Component\HttpFoundation\R
 $app->match('/user_login', function () use ($app) {
     
 	$table_columns = array(
-		'user_login_ID', 
-		'LOGIN', 
-		'PLAIN_PASSWORD', 
-		'HASHED_PASSWORD', 
-		'USER_LEVEL', 
-		'EMAIL', 
-		'PHONE', 
+		'user_login_id', 
+		'login', 
+		'plain_password', 
+		'hashed_password', 
+		'user_level', 
+		'email', 
+		'phone', 
 
     );
 	
@@ -195,7 +195,7 @@ $app->match('/user_login', function () use ($app) {
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "user_login_ID";	
+    $primary_key = "user_login_id";	
 
     return $app['twig']->render('user_login/list.html.twig', array(
     	"table_columns" => $table_columns,
@@ -210,12 +210,12 @@ $app->match('/user_login', function () use ($app) {
 $app->match('/user_login/create', function () use ($app) {
     
     $initial_data = array(
-		'LOGIN' => '', 
-		'PLAIN_PASSWORD' => '', 
-		'HASHED_PASSWORD' => '', 
-		'USER_LEVEL' => '', 
-		'EMAIL' => '', 
-		'PHONE' => '', 
+		'login' => '', 
+		'plain_password' => '', 
+		'hashed_password' => '', 
+		'user_level' => '', 
+		'email' => '', 
+		'phone' => '', 
 
     );
 
@@ -231,32 +231,32 @@ $app->match('/user_login/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('LOGIN', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('login', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('PLAIN_PASSWORD', 'text', array_merge(array('required' => false),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('HASHED_PASSWORD', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('plain_password', 'text', array_merge(array('required' => false),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('USER_LEVEL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('hashed_password', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('EMAIL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('user_level', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('email', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('PHONE', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('phone', 'text', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -268,8 +268,8 @@ $app->match('/user_login/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `user_login` (`LOGIN`, `PLAIN_PASSWORD`, `HASHED_PASSWORD`, `USER_LEVEL`, `EMAIL`, `PHONE`) VALUES (?, ?, ?, ?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL'], $data['EMAIL'], $data['PHONE']));            
+            $update_query = "INSERT INTO `user_login` (`login`, `plain_password`, `hashed_password`, `user_level`, `email`, `phone`) VALUES (?, ?, ?, ?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['login'], $data['plain_password'], $data['hashed_password'], $data['user_level'], $data['email'], $data['phone']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -294,7 +294,7 @@ $app->match('/user_login/create', function () use ($app) {
 
 $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_login` WHERE `user_login_ID` = ?";
+    $find_sql = "SELECT * FROM `user_login` WHERE `user_login_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -309,12 +309,12 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
-		'LOGIN' => $row_sql['LOGIN'], 
-		'PLAIN_PASSWORD' => $row_sql['PLAIN_PASSWORD'], 
-		'HASHED_PASSWORD' => $row_sql['HASHED_PASSWORD'], 
-		'USER_LEVEL' => $row_sql['USER_LEVEL'], 
-		'EMAIL' => $row_sql['EMAIL'], 
-		'PHONE' => $row_sql['PHONE'], 
+		'login' => $row_sql['login'], 
+		'plain_password' => $row_sql['plain_password'], 
+		'hashed_password' => $row_sql['hashed_password'], 
+		'user_level' => $row_sql['user_level'], 
+		'email' => $row_sql['email'], 
+		'phone' => $row_sql['phone'], 
 
     );
 
@@ -330,32 +330,32 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('LOGIN', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('login', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('PLAIN_PASSWORD', 'text', array_merge(array('required' => false),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('HASHED_PASSWORD', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('plain_password', 'text', array_merge(array('required' => false),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('USER_LEVEL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('hashed_password', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('EMAIL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('user_level', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('email', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('PHONE', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('phone', 'text', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -368,8 +368,8 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `user_login` SET `LOGIN` = ?, `PLAIN_PASSWORD` = ?, `HASHED_PASSWORD` = ?, `USER_LEVEL` = ?, `EMAIL` = ?, `PHONE` = ? WHERE `user_login_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL'], $data['EMAIL'], $data['PHONE'], $id));            
+            $update_query = "UPDATE `user_login` SET `login` = ?, `plain_password` = ?, `hashed_password` = ?, `user_level` = ?, `email` = ?, `phone` = ? WHERE `user_login_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['login'], $data['plain_password'], $data['hashed_password'], $data['user_level'], $data['email'], $data['phone'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
@@ -395,11 +395,11 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 
 $app->match('/user_login/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_login` WHERE `user_login_ID` = ?";
+    $find_sql = "SELECT * FROM `user_login` WHERE `user_login_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `user_login` WHERE `user_login_ID` = ?";
+        $delete_query = "DELETE FROM `user_login` WHERE `user_login_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(

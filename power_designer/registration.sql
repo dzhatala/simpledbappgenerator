@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     23/12/2018 07.18.30                          */
+/* Created on:     23/12/2018 18.22.05                          */
 /*==============================================================*/
 
 
@@ -8,23 +8,15 @@ drop table if exists applicant;
 
 drop table if exists crud_table;
 
-drop index index_4 on cr_permission;
-
 drop table if exists cr_permission;
-
-drop index index_4 on dr_permission;
 
 drop table if exists dr_permission;
 
 drop table if exists rr_permission;
 
-drop index index_4 on ur_permission;
-
 drop table if exists ur_permission;
 
 drop table if exists user_login;
-
-drop index unique_01 on user_role;
 
 drop table if exists user_role;
 
@@ -35,7 +27,7 @@ drop table if exists user_role_type;
 /*==============================================================*/
 create table applicant
 (
-   applicant_id         int not null,
+   applicant_id         int not null auto_increment,
    user_login_id        int not null,
    address              text not null,
    prodi_1              varchar(1024) not null,
@@ -47,14 +39,12 @@ create table applicant
    primary key (applicant_id)
 );
 
-alter table applicant comment 'Studen Registration Info, example case study demonstrating d';
-
 /*==============================================================*/
 /* Table: crud_table                                            */
 /*==============================================================*/
 create table crud_table
 (
-   crud_table_id        int not null,
+   crud_table_id        int not null auto_increment,
    name                 varchar(1024) not null,
    primary key (crud_table_id)
 );
@@ -64,7 +54,7 @@ create table crud_table
 /*==============================================================*/
 create table cr_permission
 (
-   cr_permission_id     int not null,
+   cr_permission_id     int not null auto_increment,
    user_login_id        int not null,
    crud_table_id        int not null,
    primary key (cr_permission_id)
@@ -73,20 +63,11 @@ create table cr_permission
 alter table cr_permission comment 'Create Record Permission';
 
 /*==============================================================*/
-/* Index: index_4                                               */
-/*==============================================================*/
-create unique index index_4 on cr_permission
-(
-   user_login_id,
-   crud_table_id
-);
-
-/*==============================================================*/
 /* Table: dr_permission                                         */
 /*==============================================================*/
 create table dr_permission
 (
-   dr_permission_id     int not null,
+   dr_permission_id     int not null auto_increment,
    crud_table_id        int not null,
    user_login_id        int not null,
    record_id            int not null,
@@ -96,21 +77,11 @@ create table dr_permission
 alter table dr_permission comment 'Delete Record Permission';
 
 /*==============================================================*/
-/* Index: index_4                                               */
-/*==============================================================*/
-create unique index index_4 on dr_permission
-(
-   crud_table_id,
-   user_login_id,
-   record_id
-);
-
-/*==============================================================*/
 /* Table: rr_permission                                         */
 /*==============================================================*/
 create table rr_permission
 (
-   rr_permission_id     int not null,
+   rr_permission_id     int not null auto_increment,
    crud_table_id        int not null,
    user_login_id        int not null,
    record_id            int not null,
@@ -134,24 +105,14 @@ create table ur_permission
 alter table ur_permission comment 'Update Record Permission';
 
 /*==============================================================*/
-/* Index: index_4                                               */
-/*==============================================================*/
-create unique index index_4 on ur_permission
-(
-   user_login_id,
-   crud_table_id,
-   record_id
-);
-
-/*==============================================================*/
 /* Table: user_login                                            */
 /*==============================================================*/
 create table user_login
 (
-   user_login_id        int not null,
+   user_login_id        int not null auto_increment,
    login                varchar(255) not null,
    plain_password       varchar(255) default null,
-   hashed_password      varchar(255) not null,
+   hashed_password      varchar(255) not null default null,
    user_level           int not null,
    email                varchar(255) not null,
    phone                varchar(32),
@@ -163,19 +124,10 @@ create table user_login
 /*==============================================================*/
 create table user_role
 (
-   user_role_id         int not null,
+   user_role_id         int not null auto_increment,
    user_role_type_id    int not null,
    user_login_id        int not null,
    primary key (user_role_id)
-);
-
-/*==============================================================*/
-/* Index: unique_01                                             */
-/*==============================================================*/
-create unique index unique_01 on user_role
-(
-   user_role_type_id,
-   user_login_id
 );
 
 /*==============================================================*/
@@ -183,7 +135,7 @@ create unique index unique_01 on user_role
 /*==============================================================*/
 create table user_role_type
 (
-   user_role_type_id    int not null,
+   user_role_type_id    int not null auto_increment,
    role_name            varchar(255) not null,
    primary key (user_role_type_id)
 );

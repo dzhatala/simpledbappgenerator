@@ -27,7 +27,7 @@ function user_credentials($login){
 	//echo "dc "; die;
 	$credentials=array();
 	$roles=array();
-	array_push($roles,"Guest");
+	array_push($roles,"Registered");
 	$credentials['login']=$login;
 	//$credentials['userlogin_id']=-1;//admin id always 1
 	

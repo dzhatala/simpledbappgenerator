@@ -20,7 +20,9 @@ $minUserLevel = 100;
 $requiredUserLevel = array(1,3,100);
 
 //@TODO fix this .. after login ???
-if(isset($_GET['do_login']) | strlen($_SERVER['REQUEST_URI'])>1)
+//@todo when called user/role appeared $app['credential'] filled
+// but if not called $app['credential'] reset .....
+if(isset($_GET['do_login']) | strlen($_SERVER['REQUEST_URI']  >1 | isset($_SESSION['login']) ))
 {
 	include($cfgProgDir . "secure.php");
 	require_once __DIR__.'/vendor_01/auth.php';
@@ -28,6 +30,7 @@ if(isset($_GET['do_login']) | strlen($_SERVER['REQUEST_URI'])>1)
 
 require_once __DIR__.'/controllers/base.php';
 
+//@TODO .... check is user set by phpSPSecurepages ...
 		
 		
 

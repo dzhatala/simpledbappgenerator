@@ -43,9 +43,9 @@ $app->match('/user_role/list', function (Symfony\Component\HttpFoundation\Reques
     }
     
     $table_columns = array(
-		'user_role_ID', 
-		'USER_ROLE_TYPE_ID', 
-		'USER_LOGIN_ID', 
+		'user_role_id', 
+		'user_role_type_id', 
+		'user_login_id', 
 
     );
     
@@ -65,12 +65,12 @@ $app->match('/user_role/list', function (Symfony\Component\HttpFoundation\Reques
 	/**Creating enabler .. for  user_role:user_role_type_id  **/
 
 	if ($searchValue!==""){
-	    $search_sql = "SELECT `user_role_type_ID` FROM `user_role_type` WHERE `ROLE_NAME` LIKE '%". $searchValue . "%'" ; 
+	    $search_sql = "SELECT `user_role_type_id` FROM `user_role_type` WHERE `role_name` LIKE '%". $searchValue . "%'" ; 
 	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
 	    //error_log("#####user_role_type_id=>user_role_type######".count($search_row));
 	    if(count($search_rows)>0){
 	      foreach($search_rows as $search_row)  { 
-	         $transform_text_to_key .= " OR  user_role_type_id=".$search_row['user_role_type_ID']; 
+	         $transform_text_to_key .= " OR  user_role_type_id=".$search_row['user_role_type_id']; 
 	      } 
 	    }
 	 } 
@@ -78,12 +78,12 @@ $app->match('/user_role/list', function (Symfony\Component\HttpFoundation\Reques
 	/**Creating enabler .. for  user_role:user_login_id  **/
 
 	if ($searchValue!==""){
-	    $search_sql = "SELECT `user_login_ID` FROM `user_login` WHERE `LOGIN` LIKE '%". $searchValue . "%'" ; 
+	    $search_sql = "SELECT `user_login_id` FROM `user_login` WHERE `login` LIKE '%". $searchValue . "%'" ; 
 	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
 	    //error_log("#####user_login_id=>user_login######".count($search_row));
 	    if(count($search_rows)>0){
 	      foreach($search_rows as $search_row)  { 
-	         $transform_text_to_key .= " OR  user_login_id=".$search_row['user_login_ID']; 
+	         $transform_text_to_key .= " OR  user_login_id=".$search_row['user_login_id']; 
 	      } 
 	    }
 	 } 
@@ -123,15 +123,15 @@ $app->match('/user_role/list', function (Symfony\Component\HttpFoundation\Reques
     foreach($rows_sql as $row_key => $row_sql){
         for($i = 0; $i < count($table_columns); $i++){
 
-			if($table_columns[$i] == 'USER_ROLE_TYPE_ID'){
-			    $findexternal_sql = 'SELECT `ROLE_NAME` FROM `user_role_type` WHERE `user_role_type_ID` = ?';
+			if($table_columns[$i] == 'user_role_type_id'){
+			    $findexternal_sql = 'SELECT `role_name` FROM `user_role_type` WHERE `user_role_type_id` = ?';
 			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
-			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['ROLE_NAME'];
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['role_name'];
 			}
-			else if($table_columns[$i] == 'USER_LOGIN_ID'){
-			    $findexternal_sql = 'SELECT `LOGIN` FROM `user_login` WHERE `user_login_ID` = ?';
+			else if($table_columns[$i] == 'user_login_id'){
+			    $findexternal_sql = 'SELECT `login` FROM `user_login` WHERE `user_login_id` = ?';
 			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
-			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['LOGIN'];
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['login'];
 			}
 			else{
 			    $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
@@ -194,9 +194,9 @@ $app->match('/user_role/download', function (Symfony\Component\HttpFoundation\Re
 $app->match('/user_role', function () use ($app) {
     
 	$table_columns = array(
-		'user_role_ID', 
-		'USER_ROLE_TYPE_ID', 
-		'USER_LOGIN_ID', 
+		'user_role_id', 
+		'user_role_type_id', 
+		'user_login_id', 
 
     );
 	
@@ -210,7 +210,7 @@ $app->match('/user_role', function () use ($app) {
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "user_role_ID";	
+    $primary_key = "user_role_id";	
 
     return $app['twig']->render('user_role/list.html.twig', array(
     	"table_columns" => $table_columns,
@@ -225,8 +225,8 @@ $app->match('/user_role', function () use ($app) {
 $app->match('/user_role/create', function () use ($app) {
     
     $initial_data = array(
-		'USER_ROLE_TYPE_ID' => '', 
-		'USER_LOGIN_ID' => '', 
+		'user_role_type_id' => '', 
+		'user_login_id' => '', 
 
     );
 
@@ -240,13 +240,13 @@ $app->match('/user_role/create', function () use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_role_type.user_role_type_ID, user_role_type.ROLE_NAME FROM user_role_type  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_role_type.user_role_type_id, user_role_type.role_name FROM user_role_type  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_role_type_ID']] = $findexternal_row['ROLE_NAME'];
+	    $options[$findexternal_row['user_role_type_id']] = $findexternal_row['role_name'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_ROLE_TYPE_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_role_type_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -254,7 +254,7 @@ $app->match('/user_role/create', function () use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_ROLE_TYPE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_role_type_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 	$field_nullable= true  ; 
@@ -265,13 +265,13 @@ $app->match('/user_role/create', function () use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_login.user_login_ID, user_login.LOGIN FROM user_login  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_login.user_login_id, user_login.login FROM user_login  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_login_ID']] = $findexternal_row['LOGIN'];
+	    $options[$findexternal_row['user_login_id']] = $findexternal_row['login'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_LOGIN_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_login_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -279,7 +279,7 @@ $app->match('/user_role/create', function () use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_LOGIN_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_login_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 
@@ -299,8 +299,8 @@ $app->match('/user_role/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `user_role` (`USER_ROLE_TYPE_ID`, `USER_LOGIN_ID`) VALUES (?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['USER_ROLE_TYPE_ID'], $data['USER_LOGIN_ID']));            
+            $update_query = "INSERT INTO `user_role` (`user_role_type_id`, `user_login_id`) VALUES (?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['user_role_type_id'], $data['user_login_id']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -325,7 +325,7 @@ $app->match('/user_role/create', function () use ($app) {
 
 $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_role` WHERE `user_role_ID` = ?";
+    $find_sql = "SELECT * FROM `user_role` WHERE `user_role_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -340,8 +340,8 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
-		'USER_ROLE_TYPE_ID' => $row_sql['USER_ROLE_TYPE_ID'], 
-		'USER_LOGIN_ID' => $row_sql['USER_LOGIN_ID'], 
+		'user_role_type_id' => $row_sql['user_role_type_id'], 
+		'user_login_id' => $row_sql['user_login_id'], 
 
     );
 
@@ -356,13 +356,13 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_role_type.user_role_type_ID, user_role_type.ROLE_NAME FROM user_role_type  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_role_type.user_role_type_id, user_role_type.role_name FROM user_role_type  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_role_type_ID']] = $findexternal_row['ROLE_NAME'];
+	    $options[$findexternal_row['user_role_type_id']] = $findexternal_row['role_name'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_ROLE_TYPE_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_role_type_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -370,7 +370,7 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_ROLE_TYPE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_role_type_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 	$field_nullable= true  ; 
@@ -381,13 +381,13 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 	} 
 	$limiter="" ;
 	$options = array();
-	$findexternal_sql = 'SELECT user_login.user_login_ID, user_login.LOGIN FROM user_login  '  . $limiter ;
+	$findexternal_sql = 'SELECT user_login.user_login_id, user_login.login FROM user_login  '  . $limiter ;
 	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
 	foreach($findexternal_rows as $findexternal_row){
-	    $options[$findexternal_row['user_login_ID']] = $findexternal_row['LOGIN'];
+	    $options[$findexternal_row['user_login_id']] = $findexternal_row['login'];
 	}
 	if(count($options) > 0){
-	    $form = $form->add('USER_LOGIN_ID', 'choice', array_merge($field_default_ro,array(
+	    $form = $form->add('user_login_id', 'choice', array_merge($field_default_ro,array(
 	        'required' => $field_nullable,
 	        'choices' => $options,
 	        'expanded' => false,
@@ -395,7 +395,7 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 	    )));
 	}
 	else{
-	    $form = $form->add('USER_LOGIN_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	    $form = $form->add('user_login_id', 'text', array_merge(array('required' => true),$field_default_ro));
 	}
 
 
@@ -415,8 +415,8 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `user_role` SET `USER_ROLE_TYPE_ID` = ?, `USER_LOGIN_ID` = ? WHERE `user_role_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['USER_ROLE_TYPE_ID'], $data['USER_LOGIN_ID'], $id));            
+            $update_query = "UPDATE `user_role` SET `user_role_type_id` = ?, `user_login_id` = ? WHERE `user_role_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['user_role_type_id'], $data['user_login_id'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
@@ -442,11 +442,11 @@ $app->match('/user_role/edit/{id}', function ($id) use ($app) {
 
 $app->match('/user_role/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_role` WHERE `user_role_ID` = ?";
+    $find_sql = "SELECT * FROM `user_role` WHERE `user_role_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `user_role` WHERE `user_role_ID` = ?";
+        $delete_query = "DELETE FROM `user_role` WHERE `user_role_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(

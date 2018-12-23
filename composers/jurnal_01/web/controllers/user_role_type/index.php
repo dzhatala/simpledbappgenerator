@@ -43,8 +43,8 @@ $app->match('/user_role_type/list', function (Symfony\Component\HttpFoundation\R
     }
     
     $table_columns = array(
-		'user_role_type_ID', 
-		'ROLE_NAME', 
+		'user_role_type_id', 
+		'role_name', 
 
     );
     
@@ -165,8 +165,8 @@ $app->match('/user_role_type/download', function (Symfony\Component\HttpFoundati
 $app->match('/user_role_type', function () use ($app) {
     
 	$table_columns = array(
-		'user_role_type_ID', 
-		'ROLE_NAME', 
+		'user_role_type_id', 
+		'role_name', 
 
     );
 	
@@ -180,7 +180,7 @@ $app->match('/user_role_type', function () use ($app) {
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "user_role_type_ID";	
+    $primary_key = "user_role_type_id";	
 
     return $app['twig']->render('user_role_type/list.html.twig', array(
     	"table_columns" => $table_columns,
@@ -195,7 +195,7 @@ $app->match('/user_role_type', function () use ($app) {
 $app->match('/user_role_type/create', function () use ($app) {
     
     $initial_data = array(
-		'ROLE_NAME' => '', 
+		'role_name' => '', 
 
     );
 
@@ -211,7 +211,7 @@ $app->match('/user_role_type/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('ROLE_NAME', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('role_name', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -223,8 +223,8 @@ $app->match('/user_role_type/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `user_role_type` (`ROLE_NAME`) VALUES (?)";
-            $app['db']->executeUpdate($update_query, array($data['ROLE_NAME']));            
+            $update_query = "INSERT INTO `user_role_type` (`role_name`) VALUES (?)";
+            $app['db']->executeUpdate($update_query, array($data['role_name']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -249,7 +249,7 @@ $app->match('/user_role_type/create', function () use ($app) {
 
 $app->match('/user_role_type/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_role_type` WHERE `user_role_type_ID` = ?";
+    $find_sql = "SELECT * FROM `user_role_type` WHERE `user_role_type_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -264,7 +264,7 @@ $app->match('/user_role_type/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
-		'ROLE_NAME' => $row_sql['ROLE_NAME'], 
+		'role_name' => $row_sql['role_name'], 
 
     );
 
@@ -280,7 +280,7 @@ $app->match('/user_role_type/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('ROLE_NAME', 'text', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('role_name', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -293,8 +293,8 @@ $app->match('/user_role_type/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `user_role_type` SET `ROLE_NAME` = ? WHERE `user_role_type_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['ROLE_NAME'], $id));            
+            $update_query = "UPDATE `user_role_type` SET `role_name` = ? WHERE `user_role_type_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['role_name'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
@@ -320,11 +320,11 @@ $app->match('/user_role_type/edit/{id}', function ($id) use ($app) {
 
 $app->match('/user_role_type/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `user_role_type` WHERE `user_role_type_ID` = ?";
+    $find_sql = "SELECT * FROM `user_role_type` WHERE `user_role_type_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `user_role_type` WHERE `user_role_type_ID` = ?";
+        $delete_query = "DELETE FROM `user_role_type` WHERE `user_role_type_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
