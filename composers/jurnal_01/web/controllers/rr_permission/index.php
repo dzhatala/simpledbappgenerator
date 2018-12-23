@@ -44,12 +44,14 @@ $app->match('/rr_permission/list', function (Symfony\Component\HttpFoundation\Re
     
     $table_columns = array(
 		'rr_permission_ID', 
+		'CRUD_TABLE_ID', 
 		'USER_LOGIN_ID', 
 		'RECORD_ID', 
 
     );
     
     $table_columns_type = array(
+		'int(11)', 
 		'int(11)', 
 		'int(11)', 
 		'int(11)', 
@@ -62,6 +64,19 @@ $app->match('/rr_permission/list', function (Symfony\Component\HttpFoundation\Re
 	
 	/** find externals fields for search key and passing it to like as and id **/
 	
+	/**Creating enabler .. for  rr_permission:crud_table_id  **/
+
+	if ($searchValue!==""){
+	    $search_sql = "SELECT `crud_table_ID` FROM `crud_table` WHERE `NAME` LIKE '%". $searchValue . "%'" ; 
+	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
+	    //error_log("#####crud_table_id=>crud_table######".count($search_row));
+	    if(count($search_rows)>0){
+	      foreach($search_rows as $search_row)  { 
+	         $transform_text_to_key .= " OR  crud_table_id=".$search_row['crud_table_ID']; 
+	      } 
+	    }
+	 } 
+
 	/**Creating enabler .. for  rr_permission:user_login_id  **/
 
 	if ($searchValue!==""){
@@ -110,7 +125,12 @@ $app->match('/rr_permission/list', function (Symfony\Component\HttpFoundation\Re
     foreach($rows_sql as $row_key => $row_sql){
         for($i = 0; $i < count($table_columns); $i++){
 
-			if($table_columns[$i] == 'USER_LOGIN_ID'){
+			if($table_columns[$i] == 'CRUD_TABLE_ID'){
+			    $findexternal_sql = 'SELECT `NAME` FROM `crud_table` WHERE `crud_table_ID` = ?';
+			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['NAME'];
+			}
+			else if($table_columns[$i] == 'USER_LOGIN_ID'){
 			    $findexternal_sql = 'SELECT `LOGIN` FROM `user_login` WHERE `user_login_ID` = ?';
 			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
 			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['LOGIN'];
@@ -177,6 +197,7 @@ $app->match('/rr_permission', function () use ($app) {
     
 	$table_columns = array(
 		'rr_permission_ID', 
+		'CRUD_TABLE_ID', 
 		'USER_LOGIN_ID', 
 		'RECORD_ID', 
 
@@ -207,12 +228,38 @@ $app->match('/rr_permission', function () use ($app) {
 $app->match('/rr_permission/create', function () use ($app) {
     
     $initial_data = array(
+		'CRUD_TABLE_ID' => '', 
 		'USER_LOGIN_ID' => '', 
 		'RECORD_ID' => '', 
 
     );
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+	$field_nullable= true  ; 
+	if ($app['credentials']['current_role']!="Administrator"){
+		  $field_default_ro =array('read_only' => true ) ; 
+	}else { 
+		  $field_default_ro =array('read_only' => false ) ; 
+	} 
+	$limiter="" ;
+	$options = array();
+	$findexternal_sql = 'SELECT crud_table.crud_table_ID, crud_table.NAME FROM crud_table  '  . $limiter ;
+	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
+	foreach($findexternal_rows as $findexternal_row){
+	    $options[$findexternal_row['crud_table_ID']] = $findexternal_row['NAME'];
+	}
+	if(count($options) > 0){
+	    $form = $form->add('CRUD_TABLE_ID', 'choice', array_merge($field_default_ro,array(
+	        'required' => $field_nullable,
+	        'choices' => $options,
+	        'expanded' => false,
+	        'constraints' => new Assert\Choice(array_keys($options))
+	    )));
+	}
+	else{
+	    $form = $form->add('CRUD_TABLE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	}
 
 	$field_nullable= true  ; 
 	if ($app['credentials']['current_role']!="Administrator"){
@@ -261,8 +308,8 @@ $app->match('/rr_permission/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `rr_permission` (`USER_LOGIN_ID`, `RECORD_ID`) VALUES (?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['USER_LOGIN_ID'], $data['RECORD_ID']));            
+            $update_query = "INSERT INTO `rr_permission` (`CRUD_TABLE_ID`, `USER_LOGIN_ID`, `RECORD_ID`) VALUES (?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['CRUD_TABLE_ID'], $data['USER_LOGIN_ID'], $data['RECORD_ID']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -302,6 +349,7 @@ $app->match('/rr_permission/edit/{id}', function ($id) use ($app) {
 
     
     $initial_data = array(
+		'CRUD_TABLE_ID' => $row_sql['CRUD_TABLE_ID'], 
 		'USER_LOGIN_ID' => $row_sql['USER_LOGIN_ID'], 
 		'RECORD_ID' => $row_sql['RECORD_ID'], 
 
@@ -309,6 +357,31 @@ $app->match('/rr_permission/edit/{id}', function ($id) use ($app) {
 
 
     $form = $app['form.factory']->createBuilder('form', $initial_data);
+
+	$field_nullable= true  ; 
+	if ($app['credentials']['current_role']!="Administrator"){
+		  $field_default_ro =array('read_only' => true ) ; 
+	}else { 
+		  $field_default_ro =array('read_only' => false ) ; 
+	} 
+	$limiter="" ;
+	$options = array();
+	$findexternal_sql = 'SELECT crud_table.crud_table_ID, crud_table.NAME FROM crud_table  '  . $limiter ;
+	$findexternal_rows = $app['db']->fetchAll($findexternal_sql, array());
+	foreach($findexternal_rows as $findexternal_row){
+	    $options[$findexternal_row['crud_table_ID']] = $findexternal_row['NAME'];
+	}
+	if(count($options) > 0){
+	    $form = $form->add('CRUD_TABLE_ID', 'choice', array_merge($field_default_ro,array(
+	        'required' => $field_nullable,
+	        'choices' => $options,
+	        'expanded' => false,
+	        'constraints' => new Assert\Choice(array_keys($options))
+	    )));
+	}
+	else{
+	    $form = $form->add('CRUD_TABLE_ID', 'text', array_merge(array('required' => true),$field_default_ro));
+	}
 
 	$field_nullable= true  ; 
 	if ($app['credentials']['current_role']!="Administrator"){
@@ -357,8 +430,8 @@ $app->match('/rr_permission/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `rr_permission` SET `USER_LOGIN_ID` = ?, `RECORD_ID` = ? WHERE `rr_permission_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['USER_LOGIN_ID'], $data['RECORD_ID'], $id));            
+            $update_query = "UPDATE `rr_permission` SET `CRUD_TABLE_ID` = ?, `USER_LOGIN_ID` = ?, `RECORD_ID` = ? WHERE `rr_permission_ID` = ?";
+            $app['db']->executeUpdate($update_query, array($data['CRUD_TABLE_ID'], $data['USER_LOGIN_ID'], $data['RECORD_ID'], $id));            
 
 	
             $app['session']->getFlashBag()->add(

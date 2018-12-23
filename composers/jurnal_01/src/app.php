@@ -199,18 +199,9 @@ $app['translator']=$translator;
 
 if (!isset($app['credentials'])) 
 {
-	$credentials=array();
-	$roles=array();
-	array_push($roles,"Guest");
-	$credentials['login']="guest";
-	$credentials['userlogin_id']=-1;//admin id always 1
 	
-	/*f*@TODO, cek for requesting roles here .....*/
-	//error_log("@TODO, assign current role without, checking requesting roles ...");
-	
-	
-	$credentials['current_role']=$roles[0];
-	$credentials['roles']=$roles;
+	require_once __DIR__.'/../web/vendor_01/auth.php';
+	$credentials=default_credentials();
 	$app['credentials']=$credentials;
 }
 $app['title'] = "Simple DB APP";

@@ -431,7 +431,8 @@ $console
 					//var_dump($tables); die;
 					$external_primary_key = $external_table['primary_key'];
 					$external_select_field = false;
-					$search_names_foreigner_key = array('name','title','e?mail','username');
+					//$search_names_foreigner_key = array('name','title','e?mail','username');
+					$search_names_foreigner_key = array('login','name');
 
 					if(!empty($app['usr_search_names_foreigner_key'])){
 						$search_names_foreigner_key = array_merge(
@@ -448,9 +449,19 @@ $console
 						}
 					}
 
+					/*zoel*/
+					//echo "##zzz ".$external_primary_key." \n";
+							
+					if(strtolower($external_primary_key)=="user_login_id"){
+							echo "## user_login --> login \n";
+							$external_field="LOGIN";
+					}
+
+
 					if(!$external_select_field){
 						$external_select_field = $external_primary_key;
 					}
+					
 
 					$external_cond = $count_externals > 0 ? "else if" : "if";
 

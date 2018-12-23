@@ -1,168 +1,223 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     21/12/2018 12.32.54                          */
+/* Created on:     23/12/2018 07.18.30                          */
 /*==============================================================*/
 
 
-drop table if exists CRUD_TABLE;
+drop table if exists applicant;
 
-drop table if exists CR_PERMISSION;
+drop table if exists crud_table;
 
-drop table if exists DR_PERMISSION;
+drop index index_4 on cr_permission;
 
-drop table if exists REGISTRAR;
+drop table if exists cr_permission;
 
-drop table if exists RR_PERMISSION;
+drop index index_4 on dr_permission;
 
-drop table if exists UR_PERMISSION;
+drop table if exists dr_permission;
 
-drop table if exists USER_LOGIN;
+drop table if exists rr_permission;
 
-drop table if exists USER_ROLE;
+drop index index_4 on ur_permission;
 
-drop table if exists USER_ROLE_TYPE;
+drop table if exists ur_permission;
+
+drop table if exists user_login;
+
+drop index unique_01 on user_role;
+
+drop table if exists user_role;
+
+drop table if exists user_role_type;
 
 /*==============================================================*/
-/* Table: CRUD_TABLE                                            */
+/* Table: applicant                                             */
 /*==============================================================*/
-create table CRUD_TABLE
+create table applicant
 (
-   CRUD_TABLE_ID        int not null,
-   NAME                 varchar(1024) not null,
-   primary key (CRUD_TABLE_ID)
+   applicant_id         int not null,
+   user_login_id        int not null,
+   address              text not null,
+   prodi_1              varchar(1024) not null,
+   prodi_2              varchar(1024) not null,
+   high_school          varchar(1024) not null,
+   picture_path         varchar(1024) not null,
+   email_2              char(10),
+   phone_2              varchar(255),
+   primary key (applicant_id)
+);
+
+alter table applicant comment 'Studen Registration Info, example case study demonstrating d';
+
+/*==============================================================*/
+/* Table: crud_table                                            */
+/*==============================================================*/
+create table crud_table
+(
+   crud_table_id        int not null,
+   name                 varchar(1024) not null,
+   primary key (crud_table_id)
 );
 
 /*==============================================================*/
-/* Table: CR_PERMISSION                                         */
+/* Table: cr_permission                                         */
 /*==============================================================*/
-create table CR_PERMISSION
+create table cr_permission
 (
-   CR_PERMISSION_ID     int not null,
-   USER_LOGIN_ID        int not null,
-   CRUD_TABLE_ID        int not null,
-   primary key (CR_PERMISSION_ID)
+   cr_permission_id     int not null,
+   user_login_id        int not null,
+   crud_table_id        int not null,
+   primary key (cr_permission_id)
 );
 
-alter table CR_PERMISSION comment 'Create Record Permission';
+alter table cr_permission comment 'Create Record Permission';
 
 /*==============================================================*/
-/* Table: DR_PERMISSION                                         */
+/* Index: index_4                                               */
 /*==============================================================*/
-create table DR_PERMISSION
+create unique index index_4 on cr_permission
 (
-   DR_PERMISSION_ID     int not null,
-   CRUD_TABLE_ID        int not null,
-   USER_LOGIN_ID        int not null,
-   RECORD_ID            int not null,
-   primary key (DR_PERMISSION_ID)
-);
-
-alter table DR_PERMISSION comment 'Delete Record Permission';
-
-/*==============================================================*/
-/* Table: REGISTRAR                                             */
-/*==============================================================*/
-create table REGISTRAR
-(
-   REGISTRAR_ID         int not null,
-   USER_LOGIN_ID        int not null,
-   ROLE_NAME            varchar(255) not null,
-   EMAIL                varchar(255) not null,
-   MOBILE               varchar(255) not null,
-   ADDRESS              text not null,
-   PRODI_1              varchar(1024) not null,
-   PRODI_2              varchar(1024) not null,
-   primary key (REGISTRAR_ID)
+   user_login_id,
+   crud_table_id
 );
 
 /*==============================================================*/
-/* Table: RR_PERMISSION                                         */
+/* Table: dr_permission                                         */
 /*==============================================================*/
-create table RR_PERMISSION
+create table dr_permission
 (
-   RR_PERMISSION_ID     int not null,
-   USER_LOGIN_ID        int not null,
-   RECORD_ID            int not null,
-   primary key (RR_PERMISSION_ID)
+   dr_permission_id     int not null,
+   crud_table_id        int not null,
+   user_login_id        int not null,
+   record_id            int not null,
+   primary key (dr_permission_id)
 );
 
-alter table RR_PERMISSION comment 'Read Record Permission';
+alter table dr_permission comment 'Delete Record Permission';
 
 /*==============================================================*/
-/* Table: UR_PERMISSION                                         */
+/* Index: index_4                                               */
 /*==============================================================*/
-create table UR_PERMISSION
+create unique index index_4 on dr_permission
 (
-   UR_PERMISSION_ID     int not null,
-   USER_LOGIN_ID        int not null,
-   CRUD_TABLE_ID        int not null,
-   RECORD_ID            int not null,
-   primary key (UR_PERMISSION_ID)
-);
-
-alter table UR_PERMISSION comment 'Update Record Permission';
-
-/*==============================================================*/
-/* Table: USER_LOGIN                                            */
-/*==============================================================*/
-create table USER_LOGIN
-(
-   USER_LOGIN_ID        int not null,
-   LOGIN                varchar(255) not null,
-   PLAIN_PASSWORD       varchar(255) default NULL,
-   HASHED_PASSWORD      varchar(255) default NULL,
-   USER_LEVEL           int not null,
-   primary key (USER_LOGIN_ID)
+   crud_table_id,
+   user_login_id,
+   record_id
 );
 
 /*==============================================================*/
-/* Table: USER_ROLE                                             */
+/* Table: rr_permission                                         */
 /*==============================================================*/
-create table USER_ROLE
+create table rr_permission
 (
-   USER_ROLE_ID         int not null,
-   USER_ROLE_TYPE_ID    int not null,
-   USER_LOGIN_ID        int not null,
-   primary key (USER_ROLE_ID)
+   rr_permission_id     int not null,
+   crud_table_id        int not null,
+   user_login_id        int not null,
+   record_id            int not null,
+   primary key (rr_permission_id)
+);
+
+alter table rr_permission comment 'Read Record Permission';
+
+/*==============================================================*/
+/* Table: ur_permission                                         */
+/*==============================================================*/
+create table ur_permission
+(
+   ur_permission_id     int not null,
+   user_login_id        int not null,
+   crud_table_id        int not null,
+   record_id            int not null,
+   primary key (ur_permission_id)
+);
+
+alter table ur_permission comment 'Update Record Permission';
+
+/*==============================================================*/
+/* Index: index_4                                               */
+/*==============================================================*/
+create unique index index_4 on ur_permission
+(
+   user_login_id,
+   crud_table_id,
+   record_id
 );
 
 /*==============================================================*/
-/* Table: USER_ROLE_TYPE                                        */
+/* Table: user_login                                            */
 /*==============================================================*/
-create table USER_ROLE_TYPE
+create table user_login
 (
-   USER_ROLE_TYPE_ID    int not null,
-   ROLE_NAME            varchar(255) not null,
-   primary key (USER_ROLE_TYPE_ID)
+   user_login_id        int not null,
+   login                varchar(255) not null,
+   plain_password       varchar(255) default null,
+   hashed_password      varchar(255) not null,
+   user_level           int not null,
+   email                varchar(255) not null,
+   phone                varchar(32),
+   primary key (user_login_id)
 );
 
-alter table CR_PERMISSION add constraint FK_RELATIONSHIP_4 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+/*==============================================================*/
+/* Table: user_role                                             */
+/*==============================================================*/
+create table user_role
+(
+   user_role_id         int not null,
+   user_role_type_id    int not null,
+   user_login_id        int not null,
+   primary key (user_role_id)
+);
 
-alter table CR_PERMISSION add constraint FK_RELATIONSHIP_8 foreign key (CRUD_TABLE_ID)
-      references CRUD_TABLE (CRUD_TABLE_ID) on delete restrict on update restrict;
+/*==============================================================*/
+/* Index: unique_01                                             */
+/*==============================================================*/
+create unique index unique_01 on user_role
+(
+   user_role_type_id,
+   user_login_id
+);
 
-alter table DR_PERMISSION add constraint FK_RELATIONSHIP_10 foreign key (CRUD_TABLE_ID)
-      references CRUD_TABLE (CRUD_TABLE_ID) on delete restrict on update restrict;
+/*==============================================================*/
+/* Table: user_role_type                                        */
+/*==============================================================*/
+create table user_role_type
+(
+   user_role_type_id    int not null,
+   role_name            varchar(255) not null,
+   primary key (user_role_type_id)
+);
 
-alter table DR_PERMISSION add constraint FK_RELATIONSHIP_9 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+alter table applicant add constraint fk_fk_relationship_8 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
 
-alter table REGISTRAR add constraint FK_FK_RELATIONSHIP_8 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+alter table cr_permission add constraint fk_relationship_4 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
 
-alter table RR_PERMISSION add constraint FK_RELATIONSHIP_5 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+alter table cr_permission add constraint fk_relationship_8 foreign key (crud_table_id)
+      references crud_table (crud_table_id) on delete restrict on update restrict;
 
-alter table UR_PERMISSION add constraint FK_RELATIONSHIP_6 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+alter table dr_permission add constraint fk_relationship_10 foreign key (crud_table_id)
+      references crud_table (crud_table_id) on delete restrict on update restrict;
 
-alter table UR_PERMISSION add constraint FK_RELATIONSHIP_7 foreign key (CRUD_TABLE_ID)
-      references CRUD_TABLE (CRUD_TABLE_ID) on delete restrict on update restrict;
+alter table dr_permission add constraint fk_relationship_9 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
 
-alter table USER_ROLE add constraint FK_FK_RELATIONSHIP_5 foreign key (USER_ROLE_TYPE_ID)
-      references USER_ROLE_TYPE (USER_ROLE_TYPE_ID) on delete restrict on update restrict;
+alter table rr_permission add constraint fk_relationship_11 foreign key (crud_table_id)
+      references crud_table (crud_table_id) on delete restrict on update restrict;
 
-alter table USER_ROLE add constraint FK_RELATIONSHIP_3 foreign key (USER_LOGIN_ID)
-      references USER_LOGIN (USER_LOGIN_ID) on delete restrict on update restrict;
+alter table rr_permission add constraint fk_relationship_5 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
+
+alter table ur_permission add constraint fk_relationship_6 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
+
+alter table ur_permission add constraint fk_relationship_7 foreign key (crud_table_id)
+      references crud_table (crud_table_id) on delete restrict on update restrict;
+
+alter table user_role add constraint fk_fk_relationship_5 foreign key (user_role_type_id)
+      references user_role_type (user_role_type_id) on delete restrict on update restrict;
+
+alter table user_role add constraint fk_relationship_3 foreign key (user_login_id)
+      references user_login (user_login_id) on delete restrict on update restrict;
 

@@ -91,13 +91,13 @@ $cfgDbUserIDfield = 'primary_key';        // MySQL field name containing user id
 
 $cfgDbDatabase = 'registration';        // MySQL database name containing phpSecurePages table
 $cfgDbTableUsers = 'user_login';         // MySQL table name containing phpSecurePages user fields
-$cfgDbLoginfield = 'LOGIN';                // MySQL field name containing login word
-$cfgDbPasswordfield = 'PLAIN_PASSWORD';         // MySQL field name containing password
-$cfgDbUserLevelfield = 'USER_LEVEL';       // MySQL field name containing user level
+$cfgDbLoginfield = 'login';                // MySQL field name containing login word
+$cfgDbPasswordfield = 'plain_password';         // MySQL field name containing password
+$cfgDbUserLevelfield = 'user_level';       // MySQL field name containing user level
   // Choose a number which represents the category of this users authorization level.
   // Leave empty if authorization levels are not used.
   // See readme.txt for more info.
-$cfgDbUserIDfield = 'USER_ID';        // MySQL field name containing user identification
+$cfgDbUserIDfield = 'user_login_id';        // MySQL field name containing user identification
   // enter a distinct ID if you want to be able to identify the current user
   // Leave empty if no ID is necessary.
   // See readme.txt for more info.

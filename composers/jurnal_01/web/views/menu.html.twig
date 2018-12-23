@@ -3,6 +3,18 @@
 
 {% block menu %}
 {% if (app['credentials']['current_role']=="Administrator" )%}
+<li class="treeview {% if option is defined and (option == 'applicant_list' or option == 'applicant_create' or option == 'applicant_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('applicant'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'applicant_list' %}class="active"{% endif %}><a href="{{ path('applicant_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'applicant_create' %}class="active"{% endif %}><a href="{{ path('applicant_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
 <li class="treeview {% if option is defined and (option == 'cr_permission_list' or option == 'cr_permission_create' or option == 'cr_permission_edit') %}active{% endif %}">
     <a href="#">
         <i class="fa fa-folder-o"></i>
@@ -36,18 +48,6 @@
     <ul class="treeview-menu" style="display: none;">
         <li {% if option is defined and option == 'dr_permission_list' %}class="active"{% endif %}><a href="{{ path('dr_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
         <li {% if option is defined and option == 'dr_permission_create' %}class="active"{% endif %}><a href="{{ path('dr_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
-    </ul>
-</li>
-
-<li class="treeview {% if option is defined and (option == 'registrar_list' or option == 'registrar_create' or option == 'registrar_edit') %}active{% endif %}">
-    <a href="#">
-        <i class="fa fa-folder-o"></i>
-        <span> {{app['translator'].trans('registrar'|lower)}}</span>
-        <i class="fa pull-right fa-angle-right"></i>
-    </a>
-    <ul class="treeview-menu" style="display: none;">
-        <li {% if option is defined and option == 'registrar_list' %}class="active"{% endif %}><a href="{{ path('registrar_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
-        <li {% if option is defined and option == 'registrar_create' %}class="active"{% endif %}><a href="{{ path('registrar_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
     </ul>
 </li>
 
@@ -113,7 +113,6 @@
 
 
 {% endif %}
-
 
 
 {% endblock %}

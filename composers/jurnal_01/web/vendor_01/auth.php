@@ -1,14 +1,51 @@
 <?php
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+$cfgIndexpage=$_SERVER['HTTP_HOST'];
 /**return sql rows */
+
+
+/** guest credentials **/
+function default_credentials(){
+	//echo "dc "; die;
+	$credentials=array();
+	$roles=array();
+	array_push($roles,"Guest");
+	$credentials['login']="guest";
+	//$credentials['userlogin_id']=-1;//admin id always 1
+	
+	/*f*@TODO, cek for requesting roles here .....*/
+	//error_log("@TODO, assign current role without, checking requesting roles ...");
+	
+	
+	$credentials['current_role']=$roles[0];
+	$credentials['roles']=$roles;
+	return $credentials;
+}
+
+function user_credentials($login){
+	//echo "dc "; die;
+	$credentials=array();
+	$roles=array();
+	array_push($roles,"Guest");
+	$credentials['login']=$login;
+	//$credentials['userlogin_id']=-1;//admin id always 1
+	
+	/*f*@TODO, cek for requesting roles here .....*/
+	//error_log("@TODO, assign current role without, checking requesting roles ...");
+	
+	
+	$credentials['current_role']=$roles[0];
+	$credentials['roles']=$roles;
+	return $credentials;
+}
+
 function getRoles($app, $login){
 	
-	$sql="select user_login.user_login_id, user_login.login,user_role_type.name ".
+	$sql="select user_login.user_login_id, user_login.login,user_role_type.role_name ".
 	" from user_login, user_role,user_role_type ".
 	" where  user_login.user_login_id=user_role.user_login_id ".
-	" and user_role_types.USER_ROLE_TYPE_ID=user_role.user_role_type_id ".
+	" and user_role_type.user_role_type_id=user_role.user_role_type_id ".
 	" AND user_login.login='".$login."'";
 
 	return $app['db']->fetchAll($sql, array());
@@ -40,9 +77,9 @@ function deny($login,$cfgIndexpage, $uri,$strLogout){
 	echo "<center><H1><font color=\"red\"> \n";
 	echo "Hello '".$login. "' !!!. Anda tidak berhak ke  #".$uri ."#\n" ; 
 	echo "<br><a href=\"javascript:history.back()\">Kembali</a> \n";
-	echo "<br><a href=\"".$cfgIndexpage."\">\n".
+	echo "<br><a href=\"http://".$cfgIndexpage."\">\n".
 	"Halaman Awal"."</a>";
-	echo "<br><a href=\"".$cfgIndexpage."/vendor_01/logout.php\">\n".
+	echo "<br><a href=\"http://".$cfgIndexpage."/vendor_01/logout.php\">\n".
 	$strLogout."</a>\n";
 	echo "</font></H1></center>\n";
 		
@@ -50,14 +87,19 @@ function deny($login,$cfgIndexpage, $uri,$strLogout){
 	die;
 }
 
+
+/***
+	authorization and creating necessary credentials ....
+	
+*/
 function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) { 
 	
 	//echo "pass 0" ; die;
 	/**admin all allow */
 	//var_dump($_POST) ;die;
 	//return true; //test only
-	if($login=="admin"|TRUE) {
-//	if($login=="admin") {
+//	if($login=="admin"|TRUE) {  // uncomment this for admin test / maintenance
+	if($login=="admin") {
 	
 		$credentials=array();
 		$roles=array();
@@ -84,7 +126,7 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 		$app['credentials']=$credentials;
 		return true;
 	
-	}
+	} // : if (login==admin)
 	
 	//var_dump($_SESSION) ; die;
 
@@ -97,11 +139,17 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 	//echo "pass 1" ; die;
 	$roles_row=getRoles($app,$login);
 	$roles=array();
-
+	if(isset($login)){
+		//var_dump($login);
+		//var_dump(sizeof($roles)); die;
+		$app['credentials']=user_credentials($login);
+		return true;
+	}
+	//var_dump ($roles); die;
 	$request_role_match=false;
 	//$request_role_idx=-1;
-	
 	if($roles_row) {
+		echo "pass b" ; die;
 		$credentials=array();
 		//error_log($roles_row);
 		//error_log(var_dump($roles_row));

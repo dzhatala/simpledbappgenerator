@@ -48,6 +48,8 @@ $app->match('/user_login/list', function (Symfony\Component\HttpFoundation\Reque
 		'PLAIN_PASSWORD', 
 		'HASHED_PASSWORD', 
 		'USER_LEVEL', 
+		'EMAIL', 
+		'PHONE', 
 
     );
     
@@ -57,6 +59,8 @@ $app->match('/user_login/list', function (Symfony\Component\HttpFoundation\Reque
 		'varchar(255)', 
 		'varchar(255)', 
 		'int(11)', 
+		'varchar(255)', 
+		'varchar(32)', 
 
     );    
     
@@ -176,6 +180,8 @@ $app->match('/user_login', function () use ($app) {
 		'PLAIN_PASSWORD', 
 		'HASHED_PASSWORD', 
 		'USER_LEVEL', 
+		'EMAIL', 
+		'PHONE', 
 
     );
 	
@@ -208,6 +214,8 @@ $app->match('/user_login/create', function () use ($app) {
 		'PLAIN_PASSWORD' => '', 
 		'HASHED_PASSWORD' => '', 
 		'USER_LEVEL' => '', 
+		'EMAIL' => '', 
+		'PHONE' => '', 
 
     );
 
@@ -239,6 +247,16 @@ $app->match('/user_login/create', function () use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('USER_LEVEL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('EMAIL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('PHONE', 'text', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -250,8 +268,8 @@ $app->match('/user_login/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `user_login` (`LOGIN`, `PLAIN_PASSWORD`, `HASHED_PASSWORD`, `USER_LEVEL`) VALUES (?, ?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL']));            
+            $update_query = "INSERT INTO `user_login` (`LOGIN`, `PLAIN_PASSWORD`, `HASHED_PASSWORD`, `USER_LEVEL`, `EMAIL`, `PHONE`) VALUES (?, ?, ?, ?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL'], $data['EMAIL'], $data['PHONE']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -295,6 +313,8 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 		'PLAIN_PASSWORD' => $row_sql['PLAIN_PASSWORD'], 
 		'HASHED_PASSWORD' => $row_sql['HASHED_PASSWORD'], 
 		'USER_LEVEL' => $row_sql['USER_LEVEL'], 
+		'EMAIL' => $row_sql['EMAIL'], 
+		'PHONE' => $row_sql['PHONE'], 
 
     );
 
@@ -326,6 +346,16 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('USER_LEVEL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('EMAIL', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('PHONE', 'text', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -338,8 +368,8 @@ $app->match('/user_login/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `user_login` SET `LOGIN` = ?, `PLAIN_PASSWORD` = ?, `HASHED_PASSWORD` = ?, `USER_LEVEL` = ? WHERE `user_login_ID` = ?";
-            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL'], $id));            
+            $update_query = "UPDATE `user_login` SET `LOGIN` = ?, `PLAIN_PASSWORD` = ?, `HASHED_PASSWORD` = ?, `USER_LEVEL` = ?, `EMAIL` = ?, `PHONE` = ? WHERE `user_login_ID` = ?";
+            $app['db']->executeUpdate($update_query, array($data['LOGIN'], $data['PLAIN_PASSWORD'], $data['HASHED_PASSWORD'], $data['USER_LEVEL'], $data['EMAIL'], $data['PHONE'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
