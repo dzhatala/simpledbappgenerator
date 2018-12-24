@@ -21,9 +21,16 @@ $requiredUserLevel = array(1,3,100);
 
 //@TODO fix this .. after login ???
 //@todo when called user/role appeared $app['credential'] filled
-// but if not called $app['credential'] reset .....
-if(isset($_GET['do_login']) | strlen($_SERVER['REQUEST_URI']  >1 | isset($_SESSION['login']) ))
+
+//echo $login; die; 
+//var_dump($_SESSION); die;
+//error_log(isset($_SESSION));
+if(!isset($_SESSION)) session_start();
+if(isset($_GET['do_login'])  | isset($_SESSION['login']) |strlen($_SERVER['REQUEST_URI'])>1 ) 
 {
+	//var_dump($_SESSION);
+	//var_dump($_SESSION['login']); 	die;
+
 	include($cfgProgDir . "secure.php");
 	require_once __DIR__.'/vendor_01/auth.php';
 }

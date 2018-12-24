@@ -55,6 +55,10 @@ if (mysql_num_rows($userQuery) != 0) {
                 exit;
                 }
         }
+		/*if(!isset($_SESSION['login'])){
+			error_log("checklogin db register session ".$login);
+			$_SESSION['login']='$login';
+		}*/
 else {
         // user not present in database
         $phpSP_message = $strUserNotExist;
@@ -97,7 +101,7 @@ if ( ( isset($requiredUserLevel) && !empty($requiredUserLevel[0]) ) || isset($mi
 		         && ( !isset($minUserLevel) || empty($minUserLevel) || $userLevel < $minUserLevel ) ) ) {
                 // this user does not have the required user level
                 $phpSP_message = $strUserNotAllowed;
-				if(1==1){
+				if(1==0){
 				//var_dump($userArray); 
 					echo "<br> userlevel : " ;  var_dump ($userLevel);
 					echo "<br> minuserlevel : " ;  var_dump ($minUserLevel);
@@ -113,4 +117,6 @@ if ( ( isset($requiredUserLevel) && !empty($requiredUserLevel[0]) ) || isset($mi
 if ( isset($userArray["$cfgDbUserIDfield"]) && !empty($cfgDbUserIDfield) ) {
         $ID = stripslashes($userArray["$cfgDbUserIDfield"]);
         }
+		error_log("check_login_db ok\n");
+		error_log("sessesion ... ".$_SESSION['login']);
 ?>

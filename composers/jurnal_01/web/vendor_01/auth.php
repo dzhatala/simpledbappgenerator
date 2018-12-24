@@ -104,8 +104,6 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 		$credentials=array();
 		$roles=array();
 		array_push($roles,"Administrator");
-		//array_push($roles,"Reviewer");
-		//array_push($roles,"Pengusul");
 		$credentials['login']=$login;
 		$credentials['userlogin_id']=1;//admin id always 1
 		
@@ -129,16 +127,15 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 	} // : if (login==admin)
 	
 	//var_dump($_SESSION) ; die;
-
 	
 	/**not admin allow **/
-
 	
 	
 	//if ($uri==$GLOBALS['$www_root_uri'] ) $uri ="Halaman Awal";
 	//echo "pass 1" ; die;
 	$roles_row=getRoles($app,$login);
 	$roles=array();
+	
 	if(isset($login)){
 		//var_dump($login);
 		//var_dump(sizeof($roles)); die;
@@ -176,74 +173,9 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 		$app['credentials']=$credentials;
 		
 		
-		//cek table get here ....
-		if($credentials['current_role']==="Administrator"){
-			return ;
-		}
-		if(startsWith($uri,'/simlitabmas/web/resources')) return ;
-		//echo "pass 3" ; die;
-		
-		//	echo "pass 1" ; die;
-		if($credentials['current_role']!="Administrator"){
-			
-			//echo strpos(strtolower($uri),"/simlitabmas/web/usulandibuka") ;die;
-		if(strpos(strtolower($uri),"/simlitabmas/web/navchangerole")!==false) return ;
-	
-		if(strpos(strtolower($uri),"/simlitabmas/web/usulandibuka/create")!==false) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); 
-			if(strpos(strtolower($uri),"/simlitabmas/web/usulandibuka/delete")!==false) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); 
-			if(strpos(strtolower($uri),"/simlitabmas/web/usulandibuka/edit")!==false) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); 
-			if(strpos(strtolower($uri),"/simlitabmas/web/usulandibuka")!==false) return true; 
-			if(strpos(strtolower($uri),"/simlitabmas/web/uploaded/simlitabmas/")!==false) return true; 
-			//echo "enter" ; die;
-		}
-		
-		if($credentials['current_role']=="Pengusul"){
-			
-			if(startsWith($uri,'/simlitabmas/web/usulandibuka')) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); ;
-			if(startsWith($uri,'/simlitabmas/web/usulan')) return ;
-			if($uri=="/simlitabmas/web/") return ;
-			/*if($uri=="/simlitabmas/web/usulan") return ;
-			if($uri=="/simlitabmas/web/usulan/list") return ;
-			if($uri=="/simlitabmas/web/usulan/create") return ;
-			if(startsWith($uri,'/simlitabmas/web/usulan/list')){
-				deny($login,$cfgIndexpage,$uri,$strLogout);
-			}
-			if(startsWith($login,$uri,'/simlitabmas/web/usulan'))
-			{
-				return ;
-			}else deny($login,$cfgIndexpage,$uri,$strLogout);
-			*/
-		
-		}
-		
-		if($credentials['current_role']=="Reviewer"){
-			
-			if(startsWith($uri,'/simlitabmas/web/usulandibuka/create')) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); ;
-			if(startsWith($uri,'/simlitabmas/web/usulan/create')) 
-				deny($login,$cfgIndexpage,$uri,$strLogout); ;
-			if(startsWith($uri,'/simlitabmas/web/usulan')) return ;
-			if($uri=="/simlitabmas/web/") return ;
-			/*if($uri=="/simlitabmas/web/usulan") return ;
-			if($uri=="/simlitabmas/web/usulan/list") return ;
-			if($uri=="/simlitabmas/web/usulan/create") return ;
-			if(startsWith($uri,'/simlitabmas/web/usulan/list')){
-				deny($login,$cfgIndexpage,$uri,$strLogout);
-			}
-			if(startsWith($login,$uri,'/simlitabmas/web/usulan'))
-			{
-				return ;
-			}else deny($login,$cfgIndexpage,$uri,$strLogout);
-			*/
-		
-		}
 		
 		
-		//return ;
+		//return ; uncomment to ALLOW 
 	}
 	/** block **/
 	
