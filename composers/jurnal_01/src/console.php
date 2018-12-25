@@ -842,7 +842,7 @@ $console
 						else{
 							$FIELDS_FOR_FORM .= "" .
 							"\t" . "\$form = \$form->add('" . $table_column['name'] . "', 'text', array_merge(array('required' => " . $field_nullable . "),\$field_default_ro));" . "\n";
-							if(strpos($table_column['name'],"PATH_")!==false){
+							if(strpos($table_column['name'],"path_")!==false){
 								
 								//filter file uploading ....
 								if($scf=="path_proposal"){

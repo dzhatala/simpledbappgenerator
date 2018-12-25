@@ -45,26 +45,32 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
     $table_columns = array(
 		'applicant_id', 
 		'user_login_id', 
+		'birth_date', 
+		'birth_place', 
 		'address', 
 		'prodi_1', 
 		'prodi_2', 
 		'high_school', 
-		'picture_path', 
 		'email_2', 
 		'phone_2', 
+		'path_documents', 
+		'path_picture', 
 
     );
     
     $table_columns_type = array(
 		'int(11)', 
 		'int(11)', 
+		'date', 
+		'varchar(1024)', 
 		'text', 
 		'varchar(1024)', 
 		'varchar(1024)', 
 		'varchar(1024)', 
 		'varchar(1024)', 
-		'varchar(1024)', 
 		'varchar(255)', 
+		'varchar(1024)', 
+		'varchar(1024)', 
 
     );    
     
@@ -190,13 +196,16 @@ $app->match('/applicant', function () use ($app) {
 	$table_columns = array(
 		'applicant_id', 
 		'user_login_id', 
+		'birth_date', 
+		'birth_place', 
 		'address', 
 		'prodi_1', 
 		'prodi_2', 
 		'high_school', 
-		'picture_path', 
 		'email_2', 
 		'phone_2', 
+		'path_documents', 
+		'path_picture', 
 
     );
 	
@@ -226,13 +235,16 @@ $app->match('/applicant/create', function () use ($app) {
     
     $initial_data = array(
 		'user_login_id' => '', 
+		'birth_date' => '', 
+		'birth_place' => '', 
 		'address' => '', 
 		'prodi_1' => '', 
 		'prodi_2' => '', 
 		'high_school' => '', 
-		'picture_path' => '', 
 		'email_2' => '', 
 		'phone_2' => '', 
+		'path_documents' => '', 
+		'path_picture' => '', 
 
     );
 
@@ -273,6 +285,23 @@ $app->match('/applicant/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
+	if (strpos($app['request']->getRequestUri(),"create")!==false){
+		  $field_default_ro =array_merge($field_default_ro,array('data' => date("Y-m-d"))) ; 
+	} 
+	if ($app['credentials']['current_role']!="Administrator"){
+		  $field_default_ro =array_merge($field_default_ro,array('read_only' => true )) ; 
+	} 
+	$form = $form->add('birth_date', 'text', 
+ 		  $field_default_ro);
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('birth_place', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
 	$form = $form->add('address', 'textarea', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
@@ -289,11 +318,6 @@ $app->match('/applicant/create', function () use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('high_school', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('picture_path', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
@@ -304,6 +328,18 @@ $app->match('/applicant/create', function () use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('phone_2', 'text', array_merge(array('required' => false),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('path_documents', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_documents_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('path_picture', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -315,8 +351,8 @@ $app->match('/applicant/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `applicant` (`user_login_id`, `address`, `prodi_1`, `prodi_2`, `high_school`, `picture_path`, `email_2`, `phone_2`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['picture_path'], $data['email_2'], $data['phone_2']));            
+            $update_query = "INSERT INTO `applicant` (`user_login_id`, `birth_date`, `birth_place`, `address`, `prodi_1`, `prodi_2`, `high_school`, `email_2`, `phone_2`, `path_documents`, `path_picture`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['birth_date'], $data['birth_place'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['email_2'], $data['phone_2'], $data['path_documents'], $data['path_picture']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -357,13 +393,16 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
     
     $initial_data = array(
 		'user_login_id' => $row_sql['user_login_id'], 
+		'birth_date' => $row_sql['birth_date'], 
+		'birth_place' => $row_sql['birth_place'], 
 		'address' => $row_sql['address'], 
 		'prodi_1' => $row_sql['prodi_1'], 
 		'prodi_2' => $row_sql['prodi_2'], 
 		'high_school' => $row_sql['high_school'], 
-		'picture_path' => $row_sql['picture_path'], 
 		'email_2' => $row_sql['email_2'], 
 		'phone_2' => $row_sql['phone_2'], 
+		'path_documents' => $row_sql['path_documents'], 
+		'path_picture' => $row_sql['path_picture'], 
 
     );
 
@@ -404,6 +443,23 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
+	if (strpos($app['request']->getRequestUri(),"create")!==false){
+		  $field_default_ro =array_merge($field_default_ro,array('data' => date("Y-m-d"))) ; 
+	} 
+	if ($app['credentials']['current_role']!="Administrator"){
+		  $field_default_ro =array_merge($field_default_ro,array('read_only' => true )) ; 
+	} 
+	$form = $form->add('birth_date', 'text', 
+ 		  $field_default_ro);
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('birth_place', 'text', array_merge(array('required' => true),$field_default_ro));
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
 	$form = $form->add('address', 'textarea', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
@@ -420,11 +476,6 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('high_school', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('picture_path', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
@@ -435,6 +486,18 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
 	unset($field_default_ro['disabled']);
 	}
 	$form = $form->add('phone_2', 'text', array_merge(array('required' => false),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('path_documents', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_documents_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('path_picture', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -447,8 +510,8 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `applicant` SET `user_login_id` = ?, `address` = ?, `prodi_1` = ?, `prodi_2` = ?, `high_school` = ?, `picture_path` = ?, `email_2` = ?, `phone_2` = ? WHERE `applicant_id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['picture_path'], $data['email_2'], $data['phone_2'], $id));            
+            $update_query = "UPDATE `applicant` SET `user_login_id` = ?, `birth_date` = ?, `birth_place` = ?, `address` = ?, `prodi_1` = ?, `prodi_2` = ?, `high_school` = ?, `email_2` = ?, `phone_2` = ?, `path_documents` = ?, `path_picture` = ? WHERE `applicant_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['birth_date'], $data['birth_place'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['email_2'], $data['phone_2'], $data['path_documents'], $data['path_picture'], $id));            
 
 	
             $app['session']->getFlashBag()->add(

@@ -89,8 +89,8 @@ $app['usr_search_names_foreigner_key'] = array('name','description', 'info','log
 //$app['simlitabmas_role']='guest';
 //$app['simlitabmas_username']='Guest';
 $app['www_root'] = $_SERVER['SERVER_NAME']; /** symfony web dir on browsers address **/
-$app['uploaded_dir']="/media/uploaded/simlitabmas";
-$app['www_uploaded']="/uploaded/simlitabmas";
+$app['uploaded_dir']="f:/RESEARCHS/silex_windows_/uploads/jurnal_01";
+//$app['www_uploaded']="/uploaded/simlitabmas";
 if(isset($login) && $login){
 	$app['simlitabmas_username']=$login;
 	

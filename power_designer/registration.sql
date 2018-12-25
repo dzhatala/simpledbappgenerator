@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     25/12/2018 11.41.36                          */
+/* Created on:     25/12/2018 16.02.10                          */
 /*==============================================================*/
 
 
@@ -29,15 +29,18 @@ drop table if exists user_role_type;
 /*==============================================================*/
 create table applicant
 (
-   applicant_id         int not null,
+   applicant_id         int not null auto_increment,
    user_login_id        int not null,
+   birth_date           date not null,
+   birth_place          varchar(1024) not null,
    address              text not null,
    prodi_1              varchar(1024) not null,
    prodi_2              varchar(1024) not null,
    high_school          varchar(1024) not null,
-   picture_path         varchar(1024) not null,
    email_2              varchar(1024),
    phone_2              varchar(255),
+   path_documents       varchar(1024),
+   path_picture         varchar(1024),
    primary key (applicant_id)
 );
 
@@ -127,10 +130,10 @@ alter table ur_permission comment 'Update Record Permission';
 /*==============================================================*/
 create table user_login
 (
-   user_login_id        int not null,
+   user_login_id        int not null auto_increment,
    login                varchar(255) not null,
    plain_password       varchar(255) default null,
-   hashed_password      varchar(255) not null,
+   hashed_password      varchar(255) not null ,
    user_level           int not null,
    email                varchar(255) not null,
    phone                varchar(32),
