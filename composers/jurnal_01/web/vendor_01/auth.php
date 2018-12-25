@@ -74,25 +74,78 @@ function deny($login,$cfgIndexpage, $uri,$strLogout){
 	//throw new AccessDeniedException($login. "! Anda tidak berhak ke  #".$uri ."#\n" ); 
 	//
 	
-	echo "<center><H1><font color=\"red\"> \n";
-	echo "Hello '".$login. "' !!!. Anda tidak berhak ke  #".$uri ."#\n" ; 
+	echo "<center><H3> \n";
+	//echo "Hi <font color=\"red\"> '".$login. "'</font> !!!. Anda tidak berhak ke  #".$uri ."#\n" ; 
+	echo "Hi '<font color=\"blue\">".$login. "'</font> !!!. Anda <font color=\"red\"> tidak berhak </font> ke  #".$uri ."#\n" ; 
 	echo "<br><a href=\"javascript:history.back()\">Kembali</a> \n";
 	echo "<br><a href=\"http://".$cfgIndexpage."\">\n".
 	"Halaman Awal"."</a>";
 	echo "<br><a href=\"http://".$cfgIndexpage."/vendor_01/logout.php\">\n".
 	$strLogout."</a>\n";
-	echo "</font></H1></center>\n";
+	echo "</H3></center>\n";
 		
 
 	die;
 }
 
+//decomposed creation record from uri
+function TO_CRUD_info($uri){
+
+	//var_dump($uri);
+	$parts = explode('/',$uri);
+	//var_dump($parts);
+	$info=array();
+	$start=FALSE;
+	$i=0;
+	foreach ($parts as $p ){
+		//var_dump($p);
+		if(strlen($p)>0) $start=TRUE;
+		if($start) {
+		//	$info[$i]=$p;
+			array_push($info, $p);
+			$i++;
+		}
+	}
+	//var_dump($info);
+	return $info;
+
+}
+
+function is_CREATE_authorized($login,$create_uri){
+
+	return FALSE;
+}
+
+function is_CRUD_authorized($login,$uri){
+	$create_uri = TO_CRUD_info($uri);
+	if($create_uri!=NULL){
+		return is_CREATE_authorized($login,$create_uri);
+	}
+	return FALSE;
+}
 
 /***
 	authorization and creating necessary credentials ....
 	
 */
+
+
 function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) { 
+	
+	
+	
+	if(strlen($_SERVER['REQUEST_URI'])>1    
+		& $uri !="/?do_login" 
+		& $uri !="?do_login" 
+		& $uri !="/"
+		& $uri !="/?"
+		& $login !="admin"
+	) 
+	if (!is_CRUD_authorized($login,$uri)){
+		error_log("deny. ".$uri);
+		deny($login,$cfgIndexpage,$uri,$strLogout);
+		
+	}
 	
 	//echo "pass 0" ; die;
 	/**admin all allow */
