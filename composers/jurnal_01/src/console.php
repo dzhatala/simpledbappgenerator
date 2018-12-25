@@ -304,6 +304,25 @@ $console
 			}
 			
 			// file upload handlers
+			foreach($table_columns as $table_column){
+				$col=strtolower($table_column['name']);
+				if(startsWith($col,"path_")){
+					echo "Fixing upload handler for ".$stb." ".$col."\n";
+					$code_01="\n".
+					"\t\t\tif(\$data['".$col."_UPLOAD']){\n".
+					"\t\t\t	\$forig=\$app['credentials']['login'].\"__\".date(\"Y_m_d_h_m_s__\").\$data['".$col."_UPLOAD']->getClientOriginalName();\n".
+					"\t\t\t	\$data['".$col."_UPLOAD']->move(\$app['uploaded_dir'].\"/\".\$app['credentials']['login'],\$forig);\n".
+					"\t\t\t	\$data['".$col."']=\$forig ; \n".
+					"\t\t\t}";
+					
+					$__BEFORE_EXECUTE__UPDATE_CREATE__.=$code_01;
+					$__BEFORE_EXECUTE__UPDATE_EDIT__.=$code_01;
+				
+				
+				}
+			
+			}
+			
 			if($stb=="usulan"){
 				/**0.check if file uploaded 
 				   1. 
@@ -401,11 +420,13 @@ $console
 						"\t\t\t\t\t\t\t\t\t" . "    {{ form_label(form." . $table_column['name'] . ") }}" . "\n" .
 						"\t\t\t\t\t\t\t\t\t" . "    {{ form_widget(form." . $table_column['name'] . ", { attr: { 'class': 'form-control' }}) }}" . "\n" .
 						"\t\t\t\t\t\t\t\t\t" . "</div>" . "\n\n";
-						if(strpos($table_column['name'],"PATH_")!==false){
+						if(startsWith($table_column['name'],"path_")!==FALSE){
 							
 							
 							//echo "TODO FIX 299 p. 299 {%set uploader_userlogin_id \n";
-							/** provide download/unduh button here ... **/
+							/** provide download/unduh button here ... 
+							'|first' in code is to grep logged name from document name
+							**/
 							$EDIT_FORM_TEMPLATE .= "\n".
 							"\t\t\t\t\t\t\t\t\t" . "{%if form.vars.value.".$table_column['name']."!=\"\" %}" . "\n" .
 							"\t\t\t\t\t\t\t\t\t" . "		<div class='form-group'>" . "\n" .

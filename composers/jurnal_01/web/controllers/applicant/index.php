@@ -351,6 +351,16 @@ $app->match('/applicant/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
+			if($data['path_documents_UPLOAD']){
+				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_documents_UPLOAD']->getClientOriginalName();
+				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_documents']=$forig ; 
+			}
+			if($data['path_picture_UPLOAD']){
+				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_picture_UPLOAD']->getClientOriginalName();
+				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_picture']=$forig ; 
+			}
             $update_query = "INSERT INTO `applicant` (`user_login_id`, `birth_date`, `birth_place`, `address`, `prodi_1`, `prodi_2`, `high_school`, `email_2`, `phone_2`, `path_documents`, `path_picture`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['birth_date'], $data['birth_place'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['email_2'], $data['phone_2'], $data['path_documents'], $data['path_picture']));            
 
@@ -509,6 +519,16 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
+			if($data['path_documents_UPLOAD']){
+				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_documents_UPLOAD']->getClientOriginalName();
+				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_documents']=$forig ; 
+			}
+			if($data['path_picture_UPLOAD']){
+				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_picture_UPLOAD']->getClientOriginalName();
+				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_picture']=$forig ; 
+			}
 
             $update_query = "UPDATE `applicant` SET `user_login_id` = ?, `birth_date` = ?, `birth_place` = ?, `address` = ?, `prodi_1` = ?, `prodi_2` = ?, `high_school` = ?, `email_2` = ?, `phone_2` = ?, `path_documents` = ?, `path_picture` = ? WHERE `applicant_id` = ?";
             $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['birth_date'], $data['birth_place'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['email_2'], $data['phone_2'], $data['path_documents'], $data['path_picture'], $id));            

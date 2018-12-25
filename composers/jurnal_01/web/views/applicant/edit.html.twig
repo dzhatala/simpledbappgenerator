@@ -87,9 +87,31 @@
 									    {{ form_widget(form.path_documents, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
+
+									{%if form.vars.value.path_documents!="" %}
+											<div class='form-group'>
+												{%set uploader_userlogin_id=form.vars.value.path_documents|split('__')|first%}
+											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/{{form.vars.value.path_documents}}">Unduh </a> 
+											</div>
+									{%endif%}
+									<div class='form-group'>
+									    {{ form_widget(form.path_documents_UPLOAD, { attr: { 'class': 'form-control' }}) }}
+									</div>
+
 									<div class='form-group'>
 									    {{ form_label(form.path_picture) }}
 									    {{ form_widget(form.path_picture, { attr: { 'class': 'form-control' }}) }}
+									</div>
+
+
+									{%if form.vars.value.path_picture!="" %}
+											<div class='form-group'>
+												{%set uploader_userlogin_id=form.vars.value.path_picture|split('__')|first%}
+											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/{{form.vars.value.path_picture}}">Unduh </a> 
+											</div>
+									{%endif%}
+									<div class='form-group'>
+									    {{ form_widget(form.path_picture_UPLOAD, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
                                                  

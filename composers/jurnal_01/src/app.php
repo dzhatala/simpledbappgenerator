@@ -89,12 +89,17 @@ $app['usr_search_names_foreigner_key'] = array('name','description', 'info','log
 //$app['simlitabmas_role']='guest';
 //$app['simlitabmas_username']='Guest';
 $app['www_root'] = $_SERVER['SERVER_NAME']; /** symfony web dir on browsers address **/
-$app['uploaded_dir']="f:/RESEARCHS/silex_windows_/uploads/jurnal_01";
-//$app['www_uploaded']="/uploaded/simlitabmas";
+$app['uploaded_dir']="f:/RESEARCHS/silex_windows_/uploads/jurnal_01";  /** permanent client uploaded files location **/
+$app['www_uploaded']="/getfile_jurnal_01"; /** temporary directory to download by client ...   
+                                                   this directory must be created in doc root apache												   
+												   ***/
+												   
+												   
+					;							   
 if(isset($login) && $login){
 	$app['simlitabmas_username']=$login;
 	
-}
+};
 
 $app->simlitabmas_hasRole=function ($role){
 	
@@ -114,6 +119,23 @@ $app->before(function(){
 	//echo "before filter "; die ; 
 
 });*/
+
+
+$app->match($app['www_uploaded'].'/{f1}/{f2}', function ($f1,$f2) use ($app) {
+
+	$filename=$app['uploaded_dir']."/".$f1."/".$f2;
+    //echo "request to get file "."$f1  $f2  ==> $filename" ; die;
+    if(file_exists($filename)){
+		$response= new Symfony\Component\HttpFoundation\BinaryFileResponse($filename);
+		$response->setContentDisposition(Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+		return $response;
+	}    else {
+		throw new NotFoundHttpException("file $f2 not found !");
+	
+	}
+})
+->bind('getfile_jurnal_01');
+
 
 $app->match('/navchangerole', function () use ($app) {
 
