@@ -121,10 +121,10 @@ $app->before(function(){
 });*/
 
 
-$app->match($app['www_uploaded'].'/{f1}/{f2}', function ($f1,$f2) use ($app) {
+$app->match($app['www_uploaded'].'/{f1}/{f2}/{f3}', function ($f1,$f2,$f3) use ($app) {
 
-	$filename=$app['uploaded_dir']."/".$f1."/".$f2;
-    //echo "request to get file "."$f1  $f2  ==> $filename" ; die;
+	$filename=$app['uploaded_dir']."/".$f1."/".$f2."/".$f3;
+    //echo "request to get file "."$f1  $f2  $f3 ==> $filename" ; die;
     if(file_exists($filename)){
 		$response= new Symfony\Component\HttpFoundation\BinaryFileResponse($filename);
 		$response->setContentDisposition(Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT);

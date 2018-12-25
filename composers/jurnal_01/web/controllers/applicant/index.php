@@ -353,12 +353,12 @@ $app->match('/applicant/create', function () use ($app) {
 			
 			if($data['path_documents_UPLOAD']){
 				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_documents_UPLOAD']->getClientOriginalName();
-				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login']."/applicant",$forig);
 				$data['path_documents']=$forig ; 
 			}
 			if($data['path_picture_UPLOAD']){
 				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_picture_UPLOAD']->getClientOriginalName();
-				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login']."/applicant",$forig);
 				$data['path_picture']=$forig ; 
 			}
             $update_query = "INSERT INTO `applicant` (`user_login_id`, `birth_date`, `birth_place`, `address`, `prodi_1`, `prodi_2`, `high_school`, `email_2`, `phone_2`, `path_documents`, `path_picture`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -521,12 +521,12 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
 			
 			if($data['path_documents_UPLOAD']){
 				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_documents_UPLOAD']->getClientOriginalName();
-				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_documents_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login']."/applicant",$forig);
 				$data['path_documents']=$forig ; 
 			}
 			if($data['path_picture_UPLOAD']){
 				$forig=$app['credentials']['login']."__".date("Y_m_d_h_m_s__").$data['path_picture_UPLOAD']->getClientOriginalName();
-				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login'],$forig);
+				$data['path_picture_UPLOAD']->move($app['uploaded_dir']."/".$app['credentials']['login']."/applicant",$forig);
 				$data['path_picture']=$forig ; 
 			}
 

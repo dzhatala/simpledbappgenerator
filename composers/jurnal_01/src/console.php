@@ -311,7 +311,8 @@ $console
 					$code_01="\n".
 					"\t\t\tif(\$data['".$col."_UPLOAD']){\n".
 					"\t\t\t	\$forig=\$app['credentials']['login'].\"__\".date(\"Y_m_d_h_m_s__\").\$data['".$col."_UPLOAD']->getClientOriginalName();\n".
-					"\t\t\t	\$data['".$col."_UPLOAD']->move(\$app['uploaded_dir'].\"/\".\$app['credentials']['login'],\$forig);\n".
+					//"\t\t\t	\$data['".$col."_UPLOAD']->move(\$app['uploaded_dir'].\"/\".\$app['credentials']['login'],\$forig);\n".
+					"\t\t\t	\$data['".$col."_UPLOAD']->move(\$app['uploaded_dir'].\"/\".\$app['credentials']['login'].\"/".$TABLENAME."\",\$forig);\n".
 					"\t\t\t	\$data['".$col."']=\$forig ; \n".
 					"\t\t\t}";
 					
@@ -431,7 +432,7 @@ $console
 							"\t\t\t\t\t\t\t\t\t" . "{%if form.vars.value.".$table_column['name']."!=\"\" %}" . "\n" .
 							"\t\t\t\t\t\t\t\t\t" . "		<div class='form-group'>" . "\n" .
 							"\t\t\t\t\t\t\t\t\t" . "			{%set uploader_userlogin_id=form.vars.value.".$table_column['name']."|split('__')|first%}" . "\n" .
-							"\t\t\t\t\t\t\t\t\t" . "		   <a href=\"{{app['www_uploaded']}}/{{uploader_userlogin_id}}/{{form.vars.value.".$table_column['name']."}}\">Unduh </a> " . "\n" .
+							"\t\t\t\t\t\t\t\t\t" . "		   <a href=\"{{app['www_uploaded']}}/{{uploader_userlogin_id}}"."/$TABLENAME"."/{{form.vars.value.".$table_column['name']."}}\">Unduh </a> " . "\n" .
 							"\t\t\t\t\t\t\t\t\t" . "		</div>" . "\n" .
 							"\t\t\t\t\t\t\t\t\t" . "{%endif%}" . "\n" ;
 			

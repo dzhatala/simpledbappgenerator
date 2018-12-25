@@ -90,7 +90,7 @@
 									{%if form.vars.value.path_documents!="" %}
 											<div class='form-group'>
 												{%set uploader_userlogin_id=form.vars.value.path_documents|split('__')|first%}
-											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/{{form.vars.value.path_documents}}">Unduh </a> 
+											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/applicant/{{form.vars.value.path_documents}}">Unduh </a> 
 											</div>
 									{%endif%}
 									<div class='form-group'>
@@ -106,7 +106,7 @@
 									{%if form.vars.value.path_picture!="" %}
 											<div class='form-group'>
 												{%set uploader_userlogin_id=form.vars.value.path_picture|split('__')|first%}
-											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/{{form.vars.value.path_picture}}">Unduh </a> 
+											   <a href="{{app['www_uploaded']}}/{{uploader_userlogin_id}}/applicant/{{form.vars.value.path_picture}}">Unduh </a> 
 											</div>
 									{%endif%}
 									<div class='form-group'>
