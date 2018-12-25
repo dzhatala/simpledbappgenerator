@@ -2,6 +2,7 @@
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 $cfgIndexpage=$_SERVER['HTTP_HOST'];
+$cfgDefaultPolicy= FALSE ; // TRUE/1/ACCEPT,   FALSE/0=DENY
 /**return sql rows */
 
 
@@ -140,6 +141,8 @@ function is_authorized($app, $login,$cfgIndexpage,$strLogout,$uri) {
 		& $uri !="/"
 		& $uri !="/?"
 		& $login !="admin"
+		& $uri !="/?"
+		& !( isset($login)&  startsWith($uri,'/profile_edit')  )  /** login exist that must be Registered role***/
 	) 
 	if (!is_CRUD_authorized($login,$uri)){
 		error_log("deny. ".$uri);

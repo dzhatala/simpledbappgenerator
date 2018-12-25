@@ -1,17 +1,18 @@
 {% extends 'ag_base/backend.html.twig' %}
 
+
 {% block container %}
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'ur_permission_create'} %}
+        {% include 'menu.html.twig' with {'option': 'uri_permission_edit'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Buat Ur_permission
+                    Rubah Uri_permission, ID : {{ id }}
                 </h1>
             </section>
 
@@ -38,13 +39,8 @@
 									</div>
 
 									<div class='form-group'>
-									    {{ form_label(form.crud_table_id) }}
-									    {{ form_widget(form.crud_table_id, { attr: { 'class': 'form-control' }}) }}
-									</div>
-
-									<div class='form-group'>
-									    {{ form_label(form.record_id) }}
-									    {{ form_widget(form.record_id, { attr: { 'class': 'form-control' }}) }}
+									    {{ form_label(form.uri) }}
+									    {{ form_widget(form.uri, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
 									<div class='form-group'>
@@ -52,14 +48,14 @@
 									    {{ form_widget(form.policy, { attr: { 'class': 'form-control' }}) }}
 									</div>
 
-                                                  
+                                                 
 
                                 </div><!-- /.box-body -->
 
                                 {{ form_rest(form) }}
 
                                 <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Buat</button>
+                                    <button type="submit" class="btn btn-primary">Rubah</button>
                                     <button type="reset" class="btn btn-primary">Ulang</button>
                                 </div>
 

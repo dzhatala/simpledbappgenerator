@@ -16,7 +16,7 @@ require_once __DIR__.'/../../../src/app.php';
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-$app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Request $request) use ($app) {  
+$app->match('/uri_permission/list', function (Symfony\Component\HttpFoundation\Request $request) use ($app) {  
     $start = 0;
     $vars = $request->query->all();
     $qsStart = (int)$vars["start"];
@@ -43,28 +43,18 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
     }
     
     $table_columns = array(
-		'applicant_id', 
+		'uri_permission_id', 
 		'user_login_id', 
-		'address', 
-		'prodi_1', 
-		'prodi_2', 
-		'high_school', 
-		'picture_path', 
-		'email_2', 
-		'phone_2', 
+		'uri', 
+		'policy', 
 
     );
     
     $table_columns_type = array(
 		'int(11)', 
 		'int(11)', 
-		'text', 
 		'varchar(1024)', 
-		'varchar(1024)', 
-		'varchar(1024)', 
-		'varchar(1024)', 
-		'varchar(1024)', 
-		'varchar(255)', 
+		'tinyint(1)', 
 
     );    
     
@@ -74,7 +64,7 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
 	
 	/** find externals fields for search key and passing it to like as and id **/
 	
-	/**Creating enabler .. for  applicant:user_login_id  **/
+	/**Creating enabler .. for  uri_permission:user_login_id  **/
 
 	if ($searchValue!==""){
 	    $search_sql = "SELECT `user_login_id` FROM `user_login` WHERE `login` LIKE '%". $searchValue . "%'" ; 
@@ -100,10 +90,10 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
         }
         
         //external search  version
-		$whereClause =  $whereClause . "   applicant.".$col . " LIKE '%". $searchValue ."%' ".$transform_text_to_key;
+		$whereClause =  $whereClause . "   uri_permission.".$col . " LIKE '%". $searchValue ."%' ".$transform_text_to_key;
         
 		//non external search version ...
-		//$whereClause =  $whereClause . "   applicant.".$col . " LIKE '%". $searchValue ."%' ";
+		//$whereClause =  $whereClause . "   uri_permission.".$col . " LIKE '%". $searchValue ."%' ";
         
         $i = $i + 1;
     }
@@ -114,9 +104,9 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
 	
 	
 	
-    $recordsTotal = $app['db']->executeQuery("SELECT * FROM `applicant`" . $whereClause . $orderClause)->rowCount();
+    $recordsTotal = $app['db']->executeQuery("SELECT * FROM `uri_permission`" . $whereClause . $orderClause)->rowCount();
     
-    $find_sql = "SELECT * FROM `applicant`". $whereClause . $orderClause . " LIMIT ". $index . "," . $rowsPerPage;
+    $find_sql = "SELECT * FROM `uri_permission`". $whereClause . $orderClause . " LIMIT ". $index . "," . $rowsPerPage;
     $rows_sql = $app['db']->fetchAll($find_sql, array());
 
     foreach($rows_sql as $row_key => $row_sql){
@@ -148,7 +138,7 @@ $app->match('/applicant/list', function (Symfony\Component\HttpFoundation\Reques
 
 
 /* Download blob img */
-$app->match('/applicant/download', function (Symfony\Component\HttpFoundation\Request $request) use ($app) { 
+$app->match('/uri_permission/download', function (Symfony\Component\HttpFoundation\Request $request) use ($app) { 
     
     // menu
     $rowid = $request->get('id');
@@ -157,7 +147,7 @@ $app->match('/applicant/download', function (Symfony\Component\HttpFoundation\Re
     
     if( !$rowid || !$fieldname ) die("Invalid data");
     
-    $find_sql = "SELECT " . $fieldname . " FROM " . applicant . " WHERE ".$idfldname." = ?";
+    $find_sql = "SELECT " . $fieldname . " FROM " . uri_permission . " WHERE ".$idfldname." = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($rowid));
 
     if(!$row_sql){
@@ -185,18 +175,13 @@ $app->match('/applicant/download', function (Symfony\Component\HttpFoundation\Re
 
 
 
-$app->match('/applicant', function () use ($app) {
+$app->match('/uri_permission', function () use ($app) {
     
 	$table_columns = array(
-		'applicant_id', 
+		'uri_permission_id', 
 		'user_login_id', 
-		'address', 
-		'prodi_1', 
-		'prodi_2', 
-		'high_school', 
-		'picture_path', 
-		'email_2', 
-		'phone_2', 
+		'uri', 
+		'policy', 
 
     );
 	
@@ -204,35 +189,30 @@ $app->match('/applicant', function () use ($app) {
 	$tr_table_columns=array();
 	foreach ($table_columns as $col){
 		//var_dump($col) ;die;
-		//array_push($tr_table_columns,$app['translator']->trans("applicant".$col));
+		//array_push($tr_table_columns,$app['translator']->trans("uri_permission".$col));
 		array_push($tr_table_columns,$col);
 	}
 	$table_columns=$tr_table_columns;
 	/****/
 
-    $primary_key = "applicant_id";	
+    $primary_key = "uri_permission_id";	
 
-    return $app['twig']->render('applicant/list.html.twig', array(
+    return $app['twig']->render('uri_permission/list.html.twig', array(
     	"table_columns" => $table_columns,
         "primary_key" => $primary_key
     ));
         
 })
-->bind('applicant_list');
+->bind('uri_permission_list');
 
 
 
-$app->match('/applicant/create', function () use ($app) {
+$app->match('/uri_permission/create', function () use ($app) {
     
     $initial_data = array(
 		'user_login_id' => '', 
-		'address' => '', 
-		'prodi_1' => '', 
-		'prodi_2' => '', 
-		'high_school' => '', 
-		'picture_path' => '', 
-		'email_2' => '', 
-		'phone_2' => '', 
+		'uri' => '', 
+		'policy' => '', 
 
     );
 
@@ -273,37 +253,12 @@ $app->match('/applicant/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('address', 'textarea', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('uri', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('prodi_1', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('prodi_2', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('high_school', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('picture_path', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('email_2', 'text', array_merge(array('required' => false),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('phone_2', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('policy', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -315,33 +270,33 @@ $app->match('/applicant/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `applicant` (`user_login_id`, `address`, `prodi_1`, `prodi_2`, `high_school`, `picture_path`, `email_2`, `phone_2`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['picture_path'], $data['email_2'], $data['phone_2']));            
+            $update_query = "INSERT INTO `uri_permission` (`user_login_id`, `uri`, `policy`) VALUES (?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['uri'], $data['policy']));            
 
 
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'applicant created!',
+                    'message' => 'uri_permission created!',
                 )
             );
-            return $app->redirect($app['url_generator']->generate('applicant_list'));
+            return $app->redirect($app['url_generator']->generate('uri_permission_list'));
 
         }
     }
 
-    return $app['twig']->render('applicant/create.html.twig', array(
+    return $app['twig']->render('uri_permission/create.html.twig', array(
         "form" => $form->createView()
     ));
         
 })
-->bind('applicant_create');
+->bind('uri_permission_create');
 
 
 
-$app->match('/applicant/edit/{id}', function ($id) use ($app) {
+$app->match('/uri_permission/edit/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `applicant` WHERE `applicant_id` = ?";
+    $find_sql = "SELECT * FROM `uri_permission` WHERE `uri_permission_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if(!$row_sql){
@@ -351,19 +306,14 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
                 'message' => 'Row not found!',
             )
         );        
-        return $app->redirect($app['url_generator']->generate('applicant_list'));
+        return $app->redirect($app['url_generator']->generate('uri_permission_list'));
     }
 
     
     $initial_data = array(
 		'user_login_id' => $row_sql['user_login_id'], 
-		'address' => $row_sql['address'], 
-		'prodi_1' => $row_sql['prodi_1'], 
-		'prodi_2' => $row_sql['prodi_2'], 
-		'high_school' => $row_sql['high_school'], 
-		'picture_path' => $row_sql['picture_path'], 
-		'email_2' => $row_sql['email_2'], 
-		'phone_2' => $row_sql['phone_2'], 
+		'uri' => $row_sql['uri'], 
+		'policy' => $row_sql['policy'], 
 
     );
 
@@ -404,37 +354,12 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('address', 'textarea', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('uri', 'text', array_merge(array('required' => true),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('prodi_1', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('prodi_2', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('high_school', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('picture_path', 'text', array_merge(array('required' => true),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('email_2', 'text', array_merge(array('required' => false),$field_default_ro));
-	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
-	if($app['credentials']['current_role']=="Administrator"){
-	unset($field_default_ro['disabled']);
-	}
-	$form = $form->add('phone_2', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('policy', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -447,44 +372,44 @@ $app->match('/applicant/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `applicant` SET `user_login_id` = ?, `address` = ?, `prodi_1` = ?, `prodi_2` = ?, `high_school` = ?, `picture_path` = ?, `email_2` = ?, `phone_2` = ? WHERE `applicant_id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['address'], $data['prodi_1'], $data['prodi_2'], $data['high_school'], $data['picture_path'], $data['email_2'], $data['phone_2'], $id));            
+            $update_query = "UPDATE `uri_permission` SET `user_login_id` = ?, `uri` = ?, `policy` = ? WHERE `uri_permission_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['uri'], $data['policy'], $id));            
 
 	
             $app['session']->getFlashBag()->add(
                 'success',
                 array(
-                    'message' => 'applicant edited!',
+                    'message' => 'uri_permission edited!',
                 )
             );
-            return $app->redirect($app['url_generator']->generate('applicant_edit', array("id" => $id)));
+            return $app->redirect($app['url_generator']->generate('uri_permission_edit', array("id" => $id)));
 
         }
     }
 
-    return $app['twig']->render('applicant/edit.html.twig', array(
+    return $app['twig']->render('uri_permission/edit.html.twig', array(
         "form" => $form->createView(),
         "id" => $id
     ));
         
 })
-->bind('applicant_edit');
+->bind('uri_permission_edit');
 
 
 
-$app->match('/applicant/delete/{id}', function ($id) use ($app) {
+$app->match('/uri_permission/delete/{id}', function ($id) use ($app) {
 
-    $find_sql = "SELECT * FROM `applicant` WHERE `applicant_id` = ?";
+    $find_sql = "SELECT * FROM `uri_permission` WHERE `uri_permission_id` = ?";
     $row_sql = $app['db']->fetchAssoc($find_sql, array($id));
 
     if($row_sql){
-        $delete_query = "DELETE FROM `applicant` WHERE `applicant_id` = ?";
+        $delete_query = "DELETE FROM `uri_permission` WHERE `uri_permission_id` = ?";
         $app['db']->executeUpdate($delete_query, array($id));
 
         $app['session']->getFlashBag()->add(
             'success',
             array(
-                'message' => 'applicant deleted!',
+                'message' => 'uri_permission deleted!',
             )
         );
     }
@@ -497,10 +422,10 @@ $app->match('/applicant/delete/{id}', function ($id) use ($app) {
         );  
     }
 
-    return $app->redirect($app['url_generator']->generate('applicant_list'));
+    return $app->redirect($app['url_generator']->generate('uri_permission_list'));
 
 })
-->bind('applicant_delete');
+->bind('uri_permission_delete');
 
 
 

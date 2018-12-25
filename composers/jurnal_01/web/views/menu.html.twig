@@ -75,6 +75,18 @@
     </ul>
 </li>
 
+<li class="treeview {% if option is defined and (option == 'uri_permission_list' or option == 'uri_permission_create' or option == 'uri_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('uri_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'uri_permission_list' %}class="active"{% endif %}><a href="{{ path('uri_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'uri_permission_create' %}class="active"{% endif %}><a href="{{ path('uri_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
 <li class="treeview {% if option is defined and (option == 'user_login_list' or option == 'user_login_create' or option == 'user_login_edit') %}active{% endif %}">
     <a href="#">
         <i class="fa fa-folder-o"></i>
@@ -115,6 +127,8 @@
 {% endif %}
 
 
+
+
 {% if (app['credentials']['current_role']=="Registered" )%}
 
 <li class="treeview active">
@@ -125,10 +139,11 @@
     </a>
 	
     <ul class="treeview-menu" style="display: none;">
-        <li {% if 1 %}class="active"{% endif %}><a href="{{ path('user_login_edit',  {'id': 1} ) }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i>Edit</a></li>
+        <li {% if 1 %}class="active"{% endif %}><a href="{{ path('profile_edit') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i>Edit</a></li>
     </ul>
 	
 </li>
 {%endif%}
+
 
 {% endblock %}

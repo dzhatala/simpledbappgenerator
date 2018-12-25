@@ -16,12 +16,14 @@ require_once __DIR__.'/../../src/app.php';
 
 
 //require_once __DIR__.'/custom/test_001.php';
+require_once __DIR__.'/user_profile/index.php';
 require_once __DIR__.'/applicant/index.php';
 require_once __DIR__.'/cr_permission/index.php';
 require_once __DIR__.'/crud_table/index.php';
 require_once __DIR__.'/dr_permission/index.php';
 require_once __DIR__.'/rr_permission/index.php';
 require_once __DIR__.'/ur_permission/index.php';
+require_once __DIR__.'/uri_permission/index.php';
 require_once __DIR__.'/user_login/index.php';
 require_once __DIR__.'/user_role/index.php';
 require_once __DIR__.'/user_role_type/index.php';

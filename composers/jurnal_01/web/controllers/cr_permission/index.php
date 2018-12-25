@@ -46,6 +46,7 @@ $app->match('/cr_permission/list', function (Symfony\Component\HttpFoundation\Re
 		'cr_permission_id', 
 		'user_login_id', 
 		'crud_table_id', 
+		'policy', 
 
     );
     
@@ -53,6 +54,7 @@ $app->match('/cr_permission/list', function (Symfony\Component\HttpFoundation\Re
 		'int(11)', 
 		'int(11)', 
 		'int(11)', 
+		'tinyint(1)', 
 
     );    
     
@@ -197,6 +199,7 @@ $app->match('/cr_permission', function () use ($app) {
 		'cr_permission_id', 
 		'user_login_id', 
 		'crud_table_id', 
+		'policy', 
 
     );
 	
@@ -227,6 +230,7 @@ $app->match('/cr_permission/create', function () use ($app) {
     $initial_data = array(
 		'user_login_id' => '', 
 		'crud_table_id' => '', 
+		'policy' => '', 
 
     );
 
@@ -288,6 +292,11 @@ $app->match('/cr_permission/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('policy', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -299,8 +308,8 @@ $app->match('/cr_permission/create', function () use ($app) {
         if ($form->isValid()) {
             $data = $form->getData();
 			
-            $update_query = "INSERT INTO `cr_permission` (`user_login_id`, `crud_table_id`) VALUES (?, ?)";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['crud_table_id']));            
+            $update_query = "INSERT INTO `cr_permission` (`user_login_id`, `crud_table_id`, `policy`) VALUES (?, ?, ?)";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['crud_table_id'], $data['policy']));            
 
 
             $app['session']->getFlashBag()->add(
@@ -342,6 +351,7 @@ $app->match('/cr_permission/edit/{id}', function ($id) use ($app) {
     $initial_data = array(
 		'user_login_id' => $row_sql['user_login_id'], 
 		'crud_table_id' => $row_sql['crud_table_id'], 
+		'policy' => $row_sql['policy'], 
 
     );
 
@@ -403,6 +413,11 @@ $app->match('/cr_permission/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
+	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	if($app['credentials']['current_role']=="Administrator"){
+	unset($field_default_ro['disabled']);
+	}
+	$form = $form->add('policy', 'text', array_merge(array('required' => true),$field_default_ro));
 
 
     $form = $form->getForm();
@@ -415,8 +430,8 @@ $app->match('/cr_permission/edit/{id}', function ($id) use ($app) {
             $data = $form->getData();
 			
 
-            $update_query = "UPDATE `cr_permission` SET `user_login_id` = ?, `crud_table_id` = ? WHERE `cr_permission_id` = ?";
-            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['crud_table_id'], $id));            
+            $update_query = "UPDATE `cr_permission` SET `user_login_id` = ?, `crud_table_id` = ?, `policy` = ? WHERE `cr_permission_id` = ?";
+            $app['db']->executeUpdate($update_query, array($data['user_login_id'], $data['crud_table_id'], $data['policy'], $id));            
 
 	
             $app['session']->getFlashBag()->add(

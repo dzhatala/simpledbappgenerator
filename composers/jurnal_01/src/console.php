@@ -228,7 +228,8 @@ $console
 		$BASE_INCLUDES = "";
 		
 		//non generated bases controllers ...
-		$BASE_INCLUDES = "require_once __DIR__.'/" . "custom" . "/test_001.php';" . "\n";
+		$BASE_INCLUDES = "//require_once __DIR__.'/" . "custom" . "/test_001.php';" . "\n";
+		$BASE_INCLUDES .= "require_once __DIR__.'/" . "user_profile" . "/index.php';" . "\n";
 
 		$CRUD_WORDS_HERE="\n";
 		foreach($tables as $table_name => $table){
