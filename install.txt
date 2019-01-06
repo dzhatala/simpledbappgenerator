@@ -1,0 +1,6 @@
+1. copy composers/jurnal_01 into your local dir.
+2. create virtual host entry in apache/conf for jurnal_01/web
+3. execute registration.sql into your mysql client/phpmyadmin to create tables
+4. check user passwords in table 'user_login'
+5.  now test login from your browser.
+	
