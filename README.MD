@@ -6,10 +6,17 @@ To use it u must have :
 2. Apache web server with PHP
 3. Mysql Database Server
 
-The features to be developed is :
+The features to be developed are :
 1. Per Record level authentication
 2. Per role level authentication
 
 ==========
 
 any question : contact : dzulqarnaenhatala@gmail.com
+
+installation – 
+1. read install.txt
+
+
+
+	
