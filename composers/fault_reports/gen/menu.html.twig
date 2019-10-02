@@ -1,0 +1,29 @@
+{% extends 'ag_menu.html.twig' %}
+
+
+{% block menu %}
+{% if (app['credentials']['current_role']=="Administrator" )%}
+__MENU_OPTIONS__
+{% endif %}
+
+
+
+
+{% if (app['credentials']['current_role']=="Registered" )%}
+
+<li class="treeview active">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Profile</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+	
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if 1 %}class="active"{% endif %}><a href="{{ path('profile_edit') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i>Edit</a></li>
+    </ul>
+	
+</li>
+{%endif%}
+
+
+{% endblock %}

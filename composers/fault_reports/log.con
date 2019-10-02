@@ -1,0 +1,29 @@
+processing table 2 cr_permission
+	 ### creating enabler .. for  cr_permission:user_login_id  
+		 ### adding .. for  LOGIN
+	 ### creating enabler .. for  cr_permission:crud_table_id  
+		 ### adding .. for  NAME
+processing table 2 crud_table
+processing table 2 dr_permission
+	 ### creating enabler .. for  dr_permission:crud_table_id  
+		 ### adding .. for  NAME
+	 ### creating enabler .. for  dr_permission:user_login_id  
+		 ### adding .. for  LOGIN
+processing table 2 registrar
+	 ### creating enabler .. for  registrar:user_login_id  
+		 ### adding .. for  LOGIN
+processing table 2 rr_permission
+	 ### creating enabler .. for  rr_permission:user_login_id  
+		 ### adding .. for  LOGIN
+processing table 2 ur_permission
+	 ### creating enabler .. for  ur_permission:user_login_id  
+		 ### adding .. for  LOGIN
+	 ### creating enabler .. for  ur_permission:crud_table_id  
+		 ### adding .. for  NAME
+processing table 2 user_login
+processing table 2 user_role
+	 ### creating enabler .. for  user_role:user_role_type_id  
+		 ### adding .. for  ROLE_NAME
+	 ### creating enabler .. for  user_role:user_login_id  
+		 ### adding .. for  LOGIN
+processing table 2 user_role_type

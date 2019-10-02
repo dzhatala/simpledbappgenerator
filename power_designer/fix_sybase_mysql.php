@@ -4,7 +4,7 @@
 $mysql_hostname="localhost";
 $mysql_user = "root";
 $mysql_password = "";
-$mysql_database = "registration";
+$mysql_database = "lamp_reporting";
 
 //ALTER TABLE `cr_permission` CHANGE `CR_PERMISSION_ID` `CR_PERMISSION_ID` INT(11) NOT NULL AUTO_INCREMENT;
 

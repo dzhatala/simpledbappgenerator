@@ -4,3 +4,7 @@
 4. check user passwords in table 'user_login'
 5.  now test login from your browser.
 	
+6. New permission new functionalities:
+6.a copy model-video-controller to a new folder
+6.b modify, customize, and set new permission
+6.c set new routes

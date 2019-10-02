@@ -1,5 +1,10 @@
 <?php
-
+/***
+	new author
+	modified,sublicensed by Zulkarnaen Hatala 
+	
+	(dzulqarnaenhatala@gmail.com)
+*/
 /*
  * This file is part of the CRUD Admin Generator project.
  *
@@ -44,7 +49,7 @@ $console
 				"columns" => array()
 			);
 		}
-		/** or define  tables to be generated */
+		/** or define  tables to be generated, which will override previous tables collection */
 		if(1==0){
 			$dbTables=array();
 			

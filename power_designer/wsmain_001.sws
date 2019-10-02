@@ -4,8 +4,8 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{3342679D-40ED-4624-B806-88C884C0FDE4}" Name="dbgenerator" Type="{1E597170-9350-11D1-AB3C-0020AF71E433}" URL="/researchs/silex_windows_/power_designer/dbgenerator.cdm"/>
-		<Model ID="{6F7BC6AF-B2E7-433D-A507-589B6032150E}" Name="dbgenerator" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="dbgenerator.pdm"/>
+		<Model Expanded="Yes" ID="{3342679D-40ED-4624-B806-88C884C0FDE4}" Loaded="No" Name="dbgenerator" Type="{1E597170-9350-11D1-AB3C-0020AF71E433}" URL="/researchs/silex_windows_/power_designer/dbgenerator.cdm"/>
+		<Model Expanded="Yes" ID="{6F7BC6AF-B2E7-433D-A507-589B6032150E}" Name="dbgenerator" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="dbgenerator.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>

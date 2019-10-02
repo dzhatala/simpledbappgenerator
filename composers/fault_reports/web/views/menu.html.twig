@@ -1,0 +1,173 @@
+{% extends 'ag_menu.html.twig' %}
+
+
+{% block menu %}
+{% if (app['credentials']['current_role']=="Administrator" )%}
+<li class="treeview {% if option is defined and (option == 'applicant_list' or option == 'applicant_create' or option == 'applicant_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('applicant'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'applicant_list' %}class="active"{% endif %}><a href="{{ path('applicant_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'applicant_create' %}class="active"{% endif %}><a href="{{ path('applicant_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'cr_permission_list' or option == 'cr_permission_create' or option == 'cr_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('cr_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'cr_permission_list' %}class="active"{% endif %}><a href="{{ path('cr_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'cr_permission_create' %}class="active"{% endif %}><a href="{{ path('cr_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'crud_table_list' or option == 'crud_table_create' or option == 'crud_table_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('crud_table'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'crud_table_list' %}class="active"{% endif %}><a href="{{ path('crud_table_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'crud_table_create' %}class="active"{% endif %}><a href="{{ path('crud_table_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'dr_permission_list' or option == 'dr_permission_create' or option == 'dr_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('dr_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'dr_permission_list' %}class="active"{% endif %}><a href="{{ path('dr_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'dr_permission_create' %}class="active"{% endif %}><a href="{{ path('dr_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'fault_picture_list' or option == 'fault_picture_create' or option == 'fault_picture_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('fault_picture'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'fault_picture_list' %}class="active"{% endif %}><a href="{{ path('fault_picture_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'fault_picture_create' %}class="active"{% endif %}><a href="{{ path('fault_picture_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'lamp_fault_report_list' or option == 'lamp_fault_report_create' or option == 'lamp_fault_report_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('lamp_fault_report'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'lamp_fault_report_list' %}class="active"{% endif %}><a href="{{ path('lamp_fault_report_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'lamp_fault_report_create' %}class="active"{% endif %}><a href="{{ path('lamp_fault_report_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'rr_permission_list' or option == 'rr_permission_create' or option == 'rr_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('rr_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'rr_permission_list' %}class="active"{% endif %}><a href="{{ path('rr_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'rr_permission_create' %}class="active"{% endif %}><a href="{{ path('rr_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'ur_permission_list' or option == 'ur_permission_create' or option == 'ur_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('ur_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'ur_permission_list' %}class="active"{% endif %}><a href="{{ path('ur_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'ur_permission_create' %}class="active"{% endif %}><a href="{{ path('ur_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'uri_permission_list' or option == 'uri_permission_create' or option == 'uri_permission_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('uri_permission'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'uri_permission_list' %}class="active"{% endif %}><a href="{{ path('uri_permission_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'uri_permission_create' %}class="active"{% endif %}><a href="{{ path('uri_permission_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'user_login_list' or option == 'user_login_create' or option == 'user_login_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('user_login'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'user_login_list' %}class="active"{% endif %}><a href="{{ path('user_login_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'user_login_create' %}class="active"{% endif %}><a href="{{ path('user_login_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'user_role_list' or option == 'user_role_create' or option == 'user_role_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('user_role'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'user_role_list' %}class="active"{% endif %}><a href="{{ path('user_role_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'user_role_create' %}class="active"{% endif %}><a href="{{ path('user_role_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+<li class="treeview {% if option is defined and (option == 'user_role_type_list' or option == 'user_role_type_create' or option == 'user_role_type_edit') %}active{% endif %}">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span> {{app['translator'].trans('user_role_type'|lower)}}</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if option is defined and option == 'user_role_type_list' %}class="active"{% endif %}><a href="{{ path('user_role_type_list') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Tabular</a></li>
+        <li {% if option is defined and option == 'user_role_type_create' %}class="active"{% endif %}><a href="{{ path('user_role_type_create') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i> Buat</a></li>
+    </ul>
+</li>
+
+
+{% endif %}
+
+
+
+
+{% if (app['credentials']['current_role']=="Registered" )%}
+
+<li class="treeview active">
+    <a href="#">
+        <i class="fa fa-folder-o"></i>
+        <span>Profile</span>
+        <i class="fa pull-right fa-angle-right"></i>
+    </a>
+	
+    <ul class="treeview-menu" style="display: none;">
+        <li {% if 1 %}class="active"{% endif %}><a href="{{ path('profile_edit') }}" style="margin-left: 10px;"><i class="fa fa-angle-double-right"></i>Edit</a></li>
+    </ul>
+	
+</li>
+{%endif%}
+
+
+{% endblock %}
