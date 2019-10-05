@@ -11,9 +11,15 @@
 				dataType:'json',
 				ajax: '/one2many_lfr_fp/list_pict',
 				columns: [
-					{% for table_column in table_columns %}
-					{ "data": "{{ table_column }}"},
-                    {% endfor %}
+										{ "data": "fault_picture_id"},
+                    					{ "data": "lamp_fault_report_id"},
+                    					{ "data": "path_picture", 
+										  "render": function ( data, type, row, meta ) {
+														return '<img src="'+data+'" />';
+													}
+										},
+                    					{ "data": "gps_info_exist"},
+                    					{ "data": "gps_info"},
 					{
 						"orderable": false,
 						"data": null,

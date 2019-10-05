@@ -17,6 +17,9 @@ any question : contact : dzulqarnaenhatala@gmail.com
 installation – 
 1. read install.txt
 
+@TODO, BUGS
+1. tabular not showing data that exist in mysql, must connect internet every time browser/firefox killed.
+
 
 
 	
