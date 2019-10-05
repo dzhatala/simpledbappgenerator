@@ -253,12 +253,12 @@ $app->match('/fault_picture/create', function () use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('path_picture', 'text', array_merge(array('required' => true),$field_default_ro));
-	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('path_picture', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
@@ -366,12 +366,12 @@ $app->match('/fault_picture/edit/{id}', function ($id) use ($app) {
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
+	$field_default_ro=array('required' => false,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);
 	}
-	$form = $form->add('path_picture', 'text', array_merge(array('required' => true),$field_default_ro));
-	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => true),$field_default_ro));
+	$form = $form->add('path_picture', 'text', array_merge(array('required' => false),$field_default_ro));
+	$form = $form->add('path_picture_UPLOAD', 'file', array_merge(array('required' => false),$field_default_ro));
 	$field_default_ro=array('required' => true,'disabled' =>true)  ; 
 	if($app['credentials']['current_role']=="Administrator"){
 	unset($field_default_ro['disabled']);

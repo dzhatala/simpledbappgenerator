@@ -9,7 +9,7 @@
             $("#fault_picture_list").dataTable({
 				serverSide: true,
 				dataType:'json',
-				ajax: 'fault_picture/list',
+				ajax: '/one2many_lfr_fp/list_pict',
 				columns: [
 					{% for table_column in table_columns %}
 					{ "data": "{{ table_column }}"},

@@ -7,10 +7,10 @@
     <!-- page script -->
     <script type="text/javascript">
         $(function() {
-            $("#lamp_fault_report_list").dataTable({
+            $("#fault_picture_list").dataTable({
 				serverSide: true,
 				dataType:'json',
-				ajax: 'lamp_fault_report/list',
+				ajax: '/fault_picture/list',
 				columns: [
 					{% for table_column in table_columns %}
 					{ "data": "{{ table_column }}"},
@@ -22,7 +22,7 @@
 					}
 				],
 				rowCallback: function( row, data ) {
-					var actions = '<a href="lamp_fault_report/edit/' + data.{{primary_key}} + '" class="btn btn-primary btn-xs">Rubah</a> <a href="lamp_fault_report/delete/' + data.{{primary_key}} + '" onclick="return confirm_delete();" class="btn btn-danger btn-xs">Hapus</a>';
+					var actions = '<a href="fault_picture/edit/' + data.{{primary_key}} + '" class="btn btn-primary btn-xs">Rubah</a> <a href="fault_picture/delete/' + data.{{primary_key}} + '" onclick="return confirm_delete();" class="btn btn-danger btn-xs">Hapus</a>';
 					$('td:eq({{ table_columns|length }})', row).html( actions );
 				}
 			});
@@ -41,14 +41,14 @@
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
 
-        {% include 'menu.html.twig' with {'option': 'lamp_fault_report_list'} %}
+        {% include 'menu.html.twig' with {'option': 'fault_picture_list'} %}
 
         <!-- Right side column. Contains the navbar and content of the page -->
         <aside class="right-side">                
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Daftar {{app['translator'].trans('Lamp_fault_report'|lower) }}
+                    Daftar {{app['translator'].trans('Fault_picture'|lower) }}
                 </h1>
             </section>
 
@@ -66,12 +66,12 @@
                             </div><!-- /.box-header -->
 
                             <div class="box-body table-responsive">
-                                <a class="btn btn-primary" href="{{ path('lamp_fault_report_create') }}">Buat  {{app['translator'].trans('lamp_fault_report'|lower) }} </a><br /><br />
-                                <table id="lamp_fault_report_list" class="table table-bordered table-striped">
+                                <a class="btn btn-primary" href="{{ path('fault_picture_create') }}">Buat  {{app['translator'].trans('fault_picture'|lower) }} </a><br /><br />
+                                <table id="fault_picture_list" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             {% for table_column in table_columns %}
-                                            <th>{{app['translator'].trans('lamp_fault_report_' ~ table_column|lower)}}</th>
+                                            <th>{{app['translator'].trans('fault_picture_' ~ table_column|lower)}}</th>
                                             {% endfor %}
                                             <th>Aksi</th>
                                         </tr>
@@ -79,7 +79,7 @@
                                     <tfoot>
                                         <tr>
                                             {% for table_column in table_columns %}
-                                            <th>{{app['translator'].trans('lamp_fault_report_' ~ table_column|lower)}}</th>
+                                            <th>{{app['translator'].trans('fault_picture_' ~ table_column|lower)}}</th>
                                             {% endfor %}
                                             <th>Aksi</th>
                                         </tr>

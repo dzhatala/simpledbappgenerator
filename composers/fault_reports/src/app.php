@@ -227,7 +227,7 @@ if (!isset($app['credentials']))
 	$credentials=default_credentials();
 	$app['credentials']=$credentials;
 }
-$app['title'] = "Simple DB APP";
+$app['title'] = "Pelaporan Lampu";
 $app['login_url']="/?do_login" ;
 $app['logout_url']="/vendor_01/logout.php" ;
 return $app;

@@ -301,6 +301,127 @@ $app->match('/lamp_fault_report/create', function () use ($app) {
 ->bind('lamp_fault_report_create');
 
 
+$app->match('/one2many_lfr_fp/list_pict', function (Symfony\Component\HttpFoundation\Request $request) use ($app) {  
+    $start = 0;
+    $vars = $request->query->all();
+    $qsStart = (int)$vars["start"];
+    $search = $vars["search"];
+    $order = $vars["order"];
+    $columns = $vars["columns"];
+    $qsLength = (int)$vars["length"];    
+    
+    if($qsStart) {
+        $start = $qsStart;
+    }    
+	
+    $index = $start;   
+    $rowsPerPage = $qsLength;
+       
+    $rows = array();
+    
+    $searchValue = $search['value'];
+    $orderValue = $order[0];
+    
+    $orderClause = "";
+    if($orderValue) {
+        $orderClause = " ORDER BY ". $columns[(int)$orderValue['column']]['data'] . " " . $orderValue['dir'];
+    }
+    
+    $table_columns = array(
+		'fault_picture_id', 
+		'lamp_fault_report_id', 
+		'path_picture', 
+		'gps_info_exist', 
+		'gps_info', 
+
+    );
+    
+    $table_columns_type = array(
+		'int(11)', 
+		'int(11)', 
+		'varchar(1024)', 
+		'tinyint(1)', 
+		'varchar(1024)', 
+
+    );    
+    
+	
+    $whereClause = "";
+    $transform_text_to_key=""; /**  ... to enable search for externals ...**/
+	
+	/** find externals fields for search key and passing it to like as and id **/
+	
+	/**Creating enabler .. for  fault_picture:lamp_fault_report_id  **/
+
+	if ($searchValue!==""){
+	    $search_sql = "SELECT `lamp_fault_report_id` FROM `lamp_fault_report` WHERE `email` LIKE '%". $searchValue . "%'" ; 
+	    $search_rows = array(); $search_rows = $app['db']->fetchAll($search_sql);
+	    //error_log("#####lamp_fault_report_id=>lamp_fault_report######".count($search_row));
+	    if(count($search_rows)>0){
+	      foreach($search_rows as $search_row)  { 
+	         $transform_text_to_key .= " OR  lamp_fault_report_id=".$search_row['lamp_fault_report_id']; 
+	      } 
+	    }
+	 } 
+
+
+    $i = 0;
+    foreach($table_columns as $col){
+        
+        if ($i == 0) {
+           $whereClause = " WHERE ( 1 AND ";
+        }
+        
+        if ($i > 0) {
+            $whereClause =  $whereClause . " OR"; 
+        }
+        
+        //external search  version
+		$whereClause =  $whereClause . "   fault_picture.".$col . " LIKE '%". $searchValue ."%' ".$transform_text_to_key;
+        
+		//non external search version ...
+		//$whereClause =  $whereClause . "   fault_picture.".$col . " LIKE '%". $searchValue ."%' ";
+        
+        $i = $i + 1;
+    }
+	$whereClause .= " ) ";
+    
+	
+    
+	
+	
+	
+    $recordsTotal = $app['db']->executeQuery("SELECT * FROM `fault_picture`" . $whereClause . $orderClause)->rowCount();
+    
+    $find_sql = "SELECT * FROM `fault_picture`". $whereClause . $orderClause . " LIMIT ". $index . "," . $rowsPerPage;
+    $rows_sql = $app['db']->fetchAll($find_sql, array());
+
+    foreach($rows_sql as $row_key => $row_sql){
+        for($i = 0; $i < count($table_columns); $i++){
+
+			if($table_columns[$i] == 'lamp_fault_report_id'){
+			    $findexternal_sql = 'SELECT `email` FROM `lamp_fault_report` WHERE `lamp_fault_report_id` = ?';
+			    $findexternal_row = $app['db']->fetchAssoc($findexternal_sql, array($row_sql[$table_columns[$i]]));
+			    $rows[$row_key][$table_columns[$i]] = $findexternal_row['email'];
+			}
+			else{
+			    $rows[$row_key][$table_columns[$i]] = $row_sql[$table_columns[$i]];
+			}
+
+
+        }
+    }    
+    
+    $queryData = new queryData();
+    $queryData->start = $start;
+    $queryData->recordsTotal = $recordsTotal;
+    $queryData->recordsFiltered = $recordsTotal;
+    $queryData->data = $rows;
+    
+    return new Symfony\Component\HttpFoundation\Response(json_encode($queryData), 200);
+});
+
+
 
 //$app->match('/lamp_fault_report/edit/{id}', function ($id) use ($app) {
 $app->match('/one2many_lfr_fp/edit/{id}', function ($id) use ($app) {
@@ -426,6 +547,7 @@ $app->match('/one2many_lfr_fp/edit/{id}', function ($id) use ($app) {
 	/**fault_picture data **/
 	
     return $app['twig']->render('one2many_lfr_fp/edit.html.twig', array(
+    //return $app['twig']->render('one2many_lfr_fp/list.html.twig', array(
         "form" => $form->createView(),
         "id" => $id
     	,"table_columns" => $table_columns,

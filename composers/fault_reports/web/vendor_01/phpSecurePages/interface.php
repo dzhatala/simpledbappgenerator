@@ -77,7 +77,7 @@ body{font-family:arial;background:#FFFFFF;text-align:center;}
 <body>
 
 <!-- Place your logo here -->
-        <P><IMG width="150" SRC="<?php echo $cfgIndexpage ;?>/resources/img/logobiru01.jpg"  ALT="Simple DB App"></P>
+        <P><IMG  SRC="<?php echo $cfgIndexpage ;?>/resources/img/logobiru01.jpg"  ALT="<?php echo $app['title']; ?>"></P>
 <!-- Place your logo here -->
 <?php
 // check for error messages

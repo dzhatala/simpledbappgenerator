@@ -23,7 +23,7 @@ body{font-family:arial;background:#FFFFFF;text-align:center;}
 <body>
 
 <!-- Place your logo here -->
-        <P><IMG width="100" SRC="http://<?php echo $cfgIndexpage ?>/resources/img/logobiru01.jpg"  ALT="SdbAPP"></P>
+        <P><IMG  SRC="http://<?php echo $cfgIndexpage ?>/resources/img/logobiru01.jpg"  ALT="<?php echo $app['title']; ?>"></P>
 <!-- Place your logo here -->
 
 
