@@ -11,15 +11,16 @@
 				dataType:'json',
 				ajax: '/one2many_lfr_fp/list_pict',
 				columns: [
-										{ "data": "fault_picture_id"},
-                    					{ "data": "lamp_fault_report_id"},
-                    					{ "data": "path_picture", 
-										  "render": function ( data, type, row, meta ) {
-														return '<img src="'+data+'" />';
-													}
-										},
-                    					{ "data": "gps_info_exist"},
-                    					{ "data": "gps_info"},
+							{ "data": "fault_picture_id"},
+							{ "data": "lamp_fault_report_id"},
+							{ "data": "path_picture", 
+							  "render": function ( data, type, row, meta ) {
+											var splitted = data.split('__');
+											return splitted[0]+'<img src="/getfile_jurnal_01/'+splitted[0]+'/fault_picture/'+data+'" />';
+										}
+							},
+							{ "data": "gps_info_exist"},
+							{ "data": "gps_info"},
 					{
 						"orderable": false,
 						"data": null,

@@ -175,7 +175,7 @@ $app->match('/lamp_fault_report/download', function (Symfony\Component\HttpFound
 
 
 
-$app->match('/lamp_fault_report', function () use ($app) {
+$app->match('/one2many_lfr_fp', function () use ($app) {
     
 	$table_columns = array(
 		'lamp_fault_report_id', 
@@ -200,13 +200,13 @@ $app->match('/lamp_fault_report', function () use ($app) {
 
     $primary_key = "lamp_fault_report_id";	
 
-    return $app['twig']->render('lamp_fault_report/list.html.twig', array(
+    return $app['twig']->render('/one2many_lfr_fp/lfr_list.html.twig', array(
     	"table_columns" => $table_columns,
         "primary_key" => $primary_key
     ));
         
 })
-->bind('lamp_fault_report_list');
+->bind('one2many_lfr_fp_list');
 
 
 

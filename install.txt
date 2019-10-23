@@ -4,7 +4,18 @@
 4. check user passwords in table 'user_login'
 5.  now test login from your browser.
 	
+	
+	
 6. New permission new functionalities:
 6.a copy model-video-controller to a new folder
 6.b modify, customize, and set new permission
 6.c set new routes
+
+7. new tables
+
+	the file composers/yourapp/console is a php script file to be run in bash/shell.
+	
+	$php console generate:admin
+	
+	it will generate new html/twig/php otomatically
+	
